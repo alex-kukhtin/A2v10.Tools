@@ -1,0 +1,66 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<ImplicitUsings>disable</ImplicitUsings>
+		<LangVersion>11</LangVersion>
+		<Nullable>enable</Nullable>
+		<BuildOutputTargetFolder>tasks</BuildOutputTargetFolder>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<NoPackageAnalysis>true</NoPackageAnalysis>
+		<AssemblyName>A2v10.Sql.MSBuild</AssemblyName>
+		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+		<Version>10.1.8100</Version>
+		<Product>A2v10</Product>
+		<PackageId>A2v10.Sql.MSBuild</PackageId>
+		<Authors>Oleksandr Kukthin</Authors>
+		<Company>Oleksandr Kukthin</Company>
+		<Description>Sql builder for A2v10 applications</Description>
+		<Copyright>Copyright © 2015-2023 Oleksandr  Kukhtin. All rights reserved.</Copyright>
+		<RepositoryType>git</RepositoryType>
+		<RepositoryUrl>https://github.com/alex-kukhtin/A2v10.Core</RepositoryUrl>
+		<PackageTags>A2v10 Sql</PackageTags>
+		<TargetsForTfmSpecificBuildOutput>
+			$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage
+		</TargetsForTfmSpecificBuildOutput>
+		<!-- Tell the SDK to generate a deps.json file -->
+		<GenerateDependencyFile>true</GenerateDependencyFile>
+	</PropertyGroup>
+
+	<Target Name="AddBuildDependencyFileToBuiltProjectOutputGroupOutput" BeforeTargets="BuiltProjectOutputGroup" Condition=" '$(GenerateDependencyFile)' == 'true'">
+
+		<ItemGroup>
+			<BuiltProjectOutputGroupOutput Include="$(ProjectDepsFilePath)" TargetPath="$(ProjectDepsFileName)" FinalOutputPath="$(ProjectDepsFilePath)" />
+		</ItemGroup>
+	</Target>
+	<Target Name="CopyProjectReferencesToPackage" DependsOnTargets="ResolveReferences">
+		<ItemGroup>
+			<!-- The TargetPath is the path inside the package that the source file will be placed. This is already precomputed in the ReferenceCopyLocalPaths items' DestinationSubPath, so reuse it here. -->
+			<BuildOutputInPackage Include="@(ReferenceCopyLocalPaths)" TargetPath="%(ReferenceCopyLocalPaths.DestinationSubPath)" />
+		</ItemGroup>
+	</Target>
+	<ItemGroup>
+		<Content Include="build\A2v10.Sql.MSBuild.targets" PackagePath="build" />
+		<Content Include="build\A2v10.Sql.MSBuild.props" PackagePath="build" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.6.3" PrivateAssets="All" ExcludeAssets="Runtime" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" PrivateAssets="All" />
+		<PackageReference Update="@(PackageReference)" PrivateAssets="All" />
+	</ItemGroup>
+
+  <Target Name="PackTaskDependencies" BeforeTargets="GenerateNuspec">
+    <!--
+    The include needs to happen after output has been copied to build output folder
+    but before NuGet generates a nuspec. See https://github.com/NuGet/Home/issues/4704.
+    -->
+    <ItemGroup>
+      <_PackageFiles Include="bin\$(Configuration)\*\Newtonsoft.Json.dll">
+        <PackagePath>tools\%(RecursiveDir)</PackagePath>
+        <Visible>false</Visible>
+        <BuildAction>Content</BuildAction>
+      </_PackageFiles>
+    </ItemGroup>
+  </Target>
+</Project>
