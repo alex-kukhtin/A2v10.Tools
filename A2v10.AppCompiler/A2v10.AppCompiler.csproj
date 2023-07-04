@@ -17,6 +17,7 @@
 		<PackageTags>A2v10</PackageTags>
 		<EnforceExtendedAnalyzerRules>false</EnforceExtendedAnalyzerRules>
 		<NoWarn>$(NoWarn);NU5128</NoWarn>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -62,4 +63,8 @@
 			<TargetPathWithTargetPlatformMoniker Include="$(PKGNewtonsoft_Json)\lib\netstandard2.0\Newtonsoft.Json.dll" IncludeRuntimeDependency="false" />
 		</ItemGroup>
 	</Target>
+
+	<ItemGroup>
+		<None Include="README.md" Pack="true" PackagePath="\" />
+	</ItemGroup>
 </Project>
