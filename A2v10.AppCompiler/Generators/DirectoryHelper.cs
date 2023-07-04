@@ -31,10 +31,10 @@ internal class DirectoryHelper
     internal static ElementInfo GetFileInfo(String path, String basePath)
     {
         var relative = path.Replace(basePath, "").Substring(1).Replace('\\', '/');
-        var ider = relative.Replace('/', '_').Replace('.', '_');
+        var ider = relative.Replace('/', '_').Replace('.', '_').Replace('-', '_');
         return new ElementInfo(path, relative, ider);
     }
-
+    
     internal static IEnumerable<String> EnumerateFiles(String path, String fileName)
     {
         foreach (var f in Directory.EnumerateFiles(path, fileName, SearchOption.AllDirectories))
