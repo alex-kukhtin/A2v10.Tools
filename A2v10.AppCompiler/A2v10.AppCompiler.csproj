@@ -4,7 +4,7 @@
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<LangVersion>latest</LangVersion>
 		<Nullable>enable</Nullable>
-		<Version>10.1.8112</Version>
+		<Version>10.1.8114</Version>
 		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
 		<PackageId>A2v10.AppCompiler</PackageId>
 		<Product>A2v10</Product>
@@ -63,7 +63,7 @@
 		</ItemGroup>
 	</Target>
 	<ItemGroup>
-	  <Content Remove="bin\Debug\netstandard2.0\\A2v10.AppCompiler.dll" />
+	  <Content Remove="bin\Debug\netstandard2.0\A2v10.AppCompiler.dll" />
 	</ItemGroup>
 
 	<ItemGroup>

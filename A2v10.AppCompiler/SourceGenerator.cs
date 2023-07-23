@@ -34,7 +34,7 @@ public class SourceGenerator : ISourceGenerator
 		var addFiles = context.AdditionalFiles;
 		var nspace = context.Compilation.AssemblyName ?? String.Empty;
 		if (addFiles.Length == 0)
-			throw new ArgumentException("There is no AdditionalFiles attribute");
+			return;
 		var file = addFiles[0];
 		var path = Path.GetDirectoryName(file.Path);
 		if (!Directory.Exists(path))
@@ -103,7 +103,7 @@ public class AppContainer : IAppContainer
     public String? Authors => "$(authors)";
 	public String? Company => "$(company)";
 	public String? Description => "$(description)";
-	public string? Copyright => "$(copyright)";
+	public String? Copyright => "$(copyright)";
 
 	private static readonly Guid _id = new Guid("$(id)");
 

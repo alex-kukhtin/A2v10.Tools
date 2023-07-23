@@ -57,7 +57,9 @@ internal class DirectoryHelper
         foreach (var f in Directory.EnumerateFiles(path, "*.*", SearchOption.AllDirectories))
         {
             var relF = f.Substring(xLen + 1);
-            if (StartsWith(relF, "bin", "obj"))
+            if (StartsWith(relF, "bin", "obj", "@schemas", "Properties", "@types", "@assemblies"))
+                continue;
+            if (relF == "tsconfig.json" || relF == "sql.json")
                 continue;
             var ext = Path.GetExtension(f).ToLowerInvariant();
             if (extensions.Contains(ext))
