@@ -21,6 +21,10 @@
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	</PropertyGroup>
 
+	<!--
+	Attention! Do not update Microsoft.CodeAnalysis.CSharp to 4.7.0.
+	Azure uses 4.6.0 yet.
+	-->
 	<ItemGroup>
 		<PackageReference Include="A2v10.Module.Infrastructure" Version="10.1.8109" />
 		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4" PrivateAssets="all" />
