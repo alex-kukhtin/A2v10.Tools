@@ -4,11 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-
+using A2v10.BuildSql;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 namespace A2v10.Sql.MSBuild;
 
@@ -34,14 +32,7 @@ internal class SqlFileBuilder
 		_log.LogMessage(MessageImportance.High, $"Processing {jsonPath}");
 
 		String jsonText = File.ReadAllText(jsonPath);
-		List<SqlFileItem> list = JsonConvert.DeserializeObject<List<SqlFileItem>>(jsonText,
-			new JsonSerializerSettings()
-			{
-				ContractResolver = new DefaultContractResolver()
-				{
-					NamingStrategy = new CamelCaseNamingStrategy()
-				}
-			})
+		List<SqlFileItem> list = JSONParser.DeserializeObject<List<SqlFileItem>>(jsonText)
 			?? throw new InvalidOperationException("invalid sql.json");
 
 		foreach (var item in list)

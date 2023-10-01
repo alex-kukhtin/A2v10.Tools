@@ -10,7 +10,7 @@
 		<NoPackageAnalysis>true</NoPackageAnalysis>
 		<AssemblyName>A2v10.Sql.MSBuild</AssemblyName>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-		<Version>10.1.8101</Version>
+		<Version>10.1.8102</Version>
 		<Product>A2v10</Product>
 		<PackageId>A2v10.Sql.MSBuild</PackageId>
 		<Authors>Oleksandr Kukthin</Authors>
@@ -53,25 +53,10 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.6.3" PrivateAssets="All" ExcludeAssets="Runtime" />
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" PrivateAssets="All" Pack="True" />
 		<PackageReference Update="@(PackageReference)" PrivateAssets="All" Pack="True" />
-		<PackageReference Update="Microsoft.Build.Utilities.Core" Version="17.7.0">
+		<PackageReference Update="Microsoft.Build.Utilities.Core" Version="17.7.2">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 	</ItemGroup>
-
-  <Target Name="PackTaskDependencies" BeforeTargets="GenerateNuspec">
-    <!--
-    The include needs to happen after output has been copied to build output folder
-    but before NuGet generates a nuspec. See https://github.com/NuGet/Home/issues/4704.
-    -->
-    <ItemGroup>
-      <_PackageFiles Include="bin\$(Configuration)\*\Newtonsoft.Json.dll">
-        <PackagePath>tools\%(RecursiveDir)</PackagePath>
-        <Visible>false</Visible>
-        <BuildAction>Content</BuildAction>
-      </_PackageFiles>
-    </ItemGroup>
-  </Target>
 </Project>
