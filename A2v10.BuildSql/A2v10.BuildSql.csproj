@@ -10,13 +10,13 @@
 		<NoPackageAnalysis>true</NoPackageAnalysis>
 		<AssemblyName>A2v10.Sql.MSBuild</AssemblyName>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-		<Version>10.1.8102</Version>
+		<Version>10.1.8103</Version>
 		<Product>A2v10</Product>
 		<PackageId>A2v10.Sql.MSBuild</PackageId>
 		<Authors>Oleksandr Kukthin</Authors>
 		<Company>Oleksandr Kukthin</Company>
 		<Description>Sql builder for A2v10 applications</Description>
-		<Copyright>Copyright © 2015-2023 Oleksandr  Kukhtin. All rights reserved.</Copyright>
+		<Copyright>Copyright © 2015-2024 Oleksandr  Kukhtin. All rights reserved.</Copyright>
 		<RepositoryType>git</RepositoryType>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<RepositoryUrl>https://github.com/alex-kukhtin/A2v10.Core</RepositoryUrl>
@@ -54,7 +54,7 @@
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.6.3" PrivateAssets="All" ExcludeAssets="Runtime" />
 		<PackageReference Update="@(PackageReference)" PrivateAssets="All" Pack="True" />
-		<PackageReference Update="Microsoft.Build.Utilities.Core" Version="17.7.2">
+		<PackageReference Update="Microsoft.Build.Utilities.Core" Version="17.10.4">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>

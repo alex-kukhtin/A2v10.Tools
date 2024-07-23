@@ -50,7 +50,7 @@ public class SourceGenerator : ISourceGenerator
 		*/
 
 		context.AddSource("textfiles.g.cs", TextFileGenerator.GetSource(path, nspace,
-			new String[] { ".json", ".js", ".txt", ".xaml", ".css", ".html" }));
+			[".json", ".js", ".txt", ".xaml", ".css", ".html"]));
 
 		var sb = new StringBuilder(MAIN_CODE);
 		sb.Replace("$(namespace)", nspace);
@@ -59,6 +59,7 @@ public class SourceGenerator : ISourceGenerator
 		context.AddSource("appcontainer.g.cs", SourceText.From(sb.ToString(), Encoding.UTF8));
 	}
 
+	/*
 	private String GetResource(String resourceName, String nspace)
 	{
 		using var rs = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName);
@@ -67,6 +68,7 @@ public class SourceGenerator : ISourceGenerator
 		sb.Replace("$(namespace)", nspace);
 		return sb.ToString();
 	}
+	*/
 
 	public void Initialize(GeneratorInitializationContext context)
 	{
