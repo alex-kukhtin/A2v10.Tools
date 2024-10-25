@@ -4,7 +4,7 @@
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<LangVersion>latest</LangVersion>
 		<Nullable>enable</Nullable>
-		<Version>10.1.8117</Version>
+		<Version>10.1.8118</Version>
 		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
 		<PackageId>A2v10.AppCompiler</PackageId>
 		<Product>A2v10</Product>
@@ -26,9 +26,9 @@
 	Azure uses 4.6.0 yet.
 	-->
 	<ItemGroup>
-		<PackageReference Include="A2v10.Module.Infrastructure" Version="10.1.8109" />
-		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4" PrivateAssets="all" />
-		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.10.0" PrivateAssets="all" />
+		<PackageReference Include="A2v10.Module.Infrastructure" Version="10.1.8110" />
+		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.11.0" PrivateAssets="all" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" GeneratePathProperty="true" PrivateAssets="all" />
 	</ItemGroup>
 

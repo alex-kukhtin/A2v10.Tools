@@ -86,7 +86,7 @@ public class SourceGenerator : ISourceGenerator
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-/* Copyright © 2022-2023 Oleksandr Kukhtin. All rights reserved. */
+/* Copyright © 2022-2024 Oleksandr Kukhtin. All rights reserved. */
 
 #nullable enable
 using System;

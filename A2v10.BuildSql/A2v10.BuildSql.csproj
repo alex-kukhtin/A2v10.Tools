@@ -3,14 +3,14 @@
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<ImplicitUsings>disable</ImplicitUsings>
-		<LangVersion>11</LangVersion>
+		<LangVersion>Latest</LangVersion>
 		<Nullable>enable</Nullable>
 		<BuildOutputTargetFolder>tasks</BuildOutputTargetFolder>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<NoPackageAnalysis>true</NoPackageAnalysis>
 		<AssemblyName>A2v10.Sql.MSBuild</AssemblyName>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-		<Version>10.1.8103</Version>
+		<Version>10.1.8104</Version>
 		<Product>A2v10</Product>
 		<PackageId>A2v10.Sql.MSBuild</PackageId>
 		<Authors>Oleksandr Kukthin</Authors>
@@ -54,7 +54,7 @@
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.6.3" PrivateAssets="All" ExcludeAssets="Runtime" />
 		<PackageReference Update="@(PackageReference)" PrivateAssets="All" Pack="True" />
-		<PackageReference Update="Microsoft.Build.Utilities.Core" Version="17.10.4">
+		<PackageReference Update="Microsoft.Build.Utilities.Core" Version="17.11.4">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
