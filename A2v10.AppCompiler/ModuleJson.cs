@@ -1,4 +1,4 @@
-﻿// Copyright © 2023 Oleksandr Kukhtin. All rights reserved.
+﻿// Copyright © 2023-2025 Oleksandr Kukhtin. All rights reserved.
 
 using System;
 using System.IO;

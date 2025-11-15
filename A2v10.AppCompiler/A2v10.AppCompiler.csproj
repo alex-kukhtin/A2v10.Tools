@@ -4,12 +4,11 @@
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<LangVersion>latest</LangVersion>
 		<Nullable>enable</Nullable>
-		<Version>10.1.8118</Version>
-		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+		<Version>10.1.8200</Version>
 		<PackageId>A2v10.AppCompiler</PackageId>
 		<Product>A2v10</Product>
 		<Authors>Oleksandr Kukthin</Authors>
-		<Copyright>Copyright © 2022-2024 Oleksandr Kukhtin. All rights reserved.</Copyright>
+		<Copyright>Copyright © 2022-2025 Oleksandr Kukhtin. All rights reserved.</Copyright>
 		<Description>A2v10 Platform App Code Compiler</Description>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<IncludeBuildOutput>false</IncludeBuildOutput>
@@ -24,8 +23,8 @@
 	<ItemGroup>
 		<PackageReference Include="A2v10.Module.Infrastructure" Version="10.1.8110" />
 		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0" PrivateAssets="all" />
-		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.11.0" PrivateAssets="all" />
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" GeneratePathProperty="true" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.14.0" PrivateAssets="all" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" GeneratePathProperty="true" PrivateAssets="all" />
 	</ItemGroup>
 
 	<ItemGroup>

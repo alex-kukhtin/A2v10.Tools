@@ -1,13 +1,13 @@
-﻿// Copyright © 2022-2023 Oleksandr Kukhtin. All rights reserved.
+﻿// Copyright © 2022-2025 Oleksandr Kukhtin. All rights reserved.
 
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
-using System.Reflection;
 
 using Microsoft.CodeAnalysis.Text;
 using Microsoft.CodeAnalysis;
+using System.Collections.Immutable;
 
 namespace A2v10.AppCompiler;
 
@@ -16,9 +16,9 @@ namespace A2v10.AppCompiler;
  */
 
 [Generator]
-public class SourceGenerator : ISourceGenerator
+public class SourceGenerator : IIncrementalGenerator
 {
-	/*
+    /*
 	private static readonly DiagnosticDescriptor Info = 
 		new  DiagnosticDescriptor(id: "CL1001",
 			title: "MESSAGE",
@@ -27,8 +27,41 @@ public class SourceGenerator : ISourceGenerator
 			DiagnosticSeverity.Info,
 			isEnabledByDefault: true);
 	*/
+    public void Initialize(IncrementalGeneratorInitializationContext context)
+    {
+       //if (!Debugger.IsAttached)
+			//Debugger.Launch();
 
-	public void Execute(GeneratorExecutionContext context)
+	    Boolean MyFile(AdditionalText f)
+		{
+			return f.Path.EndsWith(".csproj");
+        } 
+
+		var items = context.AdditionalTextsProvider.Where(MyFile).Collect();
+		context.RegisterSourceOutput(items, RunStep);
+    }
+
+	public void RunStep(SourceProductionContext context, ImmutableArray<AdditionalText> files)
+	{
+		if (files.Length == 0)
+			return;
+        var file = files[0];
+        var path = Path.GetDirectoryName(file.Path);
+        Debug.WriteLine($"AppPath: {path}");
+
+        var nspace = Path.GetFileNameWithoutExtension(file.Path);
+
+        context.AddSource("textfiles.g.cs", TextFileGenerator.GetSource(path, nspace,
+            [".json", ".js", ".txt", ".xaml", ".css", ".html"]));
+
+        var sb = new StringBuilder(MAIN_CODE);
+        sb.Replace("$(namespace)", nspace);
+        sb.Replace("$(path)", Path.GetFileName(path));
+        ModuleJson.ReplaceMacros(path, sb);
+        context.AddSource("appcontainer.g.cs", SourceText.From(sb.ToString(), Encoding.UTF8));
+    }
+
+    public void Execute(GeneratorExecutionContext context)
 	{
 		Debug.WriteLine("Start generator");
 		var addFiles = context.AdditionalFiles;
@@ -70,11 +103,6 @@ public class SourceGenerator : ISourceGenerator
 	}
 	*/
 
-	public void Initialize(GeneratorInitializationContext context)
-	{
-		//if (!Debugger.IsAttached)
-		//	Debugger.Launch();
-	}
 
 	private const String MAIN_CODE = """
 //------------------------------------------------------------------------------
@@ -86,7 +114,7 @@ public class SourceGenerator : ISourceGenerator
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-/* Copyright © 2022-2024 Oleksandr Kukhtin. All rights reserved. */
+/* Copyright © 2022-2025 Oleksandr Kukhtin. All rights reserved. */
 
 #nullable enable
 using System;

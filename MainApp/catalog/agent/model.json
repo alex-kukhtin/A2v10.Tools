@@ -1,0 +1,12 @@
+{
+	"$schema": "../../@schemas/model-json-schema.json#",
+	"actions": {
+
+	},
+	"dialogs": {
+
+	},
+	"commands": {
+
+	}
+}
