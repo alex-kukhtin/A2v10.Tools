@@ -1,0 +1,22 @@
+{
+	"fields": [
+		{
+			"name": "Code",
+			"length": 50,
+			"required": true
+		}
+	],
+	"details": [
+		{
+			"name": "Contacts",
+			"fields": [
+				{
+					"name": "Name"
+				},
+				{
+					"name": "Email"
+				}
+			]
+		}
+	]
+}

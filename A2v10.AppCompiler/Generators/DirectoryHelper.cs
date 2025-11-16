@@ -1,4 +1,4 @@
-﻿// Copyright © 2022-2023 Oleksandr Kukhtin. All rights reserved.
+﻿// Copyright © 2022-2025 Oleksandr Kukhtin. All rights reserved.
 
 using System;
 using System.Collections.Generic;
@@ -31,7 +31,7 @@ internal class DirectoryHelper
     internal static ElementInfo GetFileInfo(String path, String basePath)
     {
         var relative = path.Replace(basePath, "").Substring(1).Replace('\\', '/');
-        var ider = relative.Replace('/', '_').Replace('.', '_').Replace('-', '_');
+        var ider = new String(relative.Select(c => "/.-".Contains(c) ? '_' : c).ToArray());
         return new ElementInfo(path, relative, ider);
     }
     

@@ -22,7 +22,7 @@ internal class TextFileGenerator
             sbBody.AppendLine(MapBody(fi));
         };
         sb.AppendLine(sbDict.ToString());
-        sb.AppendLine("};");
+        sb.AppendLine("\t};");
 
         sb.AppendLine(sbBody.ToString());
         sb.AppendLine("}"); // end class;
@@ -31,7 +31,7 @@ internal class TextFileGenerator
 
     static String MapEntry(ElementInfo file)
     {
-        return $"[\"{file.RelativePath}\"] = {file.Identifier},";
+        return $"\t\t[\"{file.RelativePath}\"] = {file.Identifier},";
     }
 
     static String PackText(String text)
@@ -51,7 +51,7 @@ internal class TextFileGenerator
                 text = PackText(text);
             statement = Encoder.EncodeBytes(text);
         }
-        return $"static byte[] {file.Identifier}() {{ return {statement}; }}";
+        return $"\tstatic byte[] {file.Identifier}() => {statement};";
     }
 
     private const String HEADER = @"
@@ -64,7 +64,7 @@ internal class TextFileGenerator
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-/* Copyright © 2022-2024 Oleksandr Kukhtin. All rights reserved.*/
+/* Copyright © 2022-2025 Oleksandr Kukhtin. All rights reserved.*/
 
 using System;
 using System.IO;

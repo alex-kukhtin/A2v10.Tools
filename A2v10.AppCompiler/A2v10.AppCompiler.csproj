@@ -32,11 +32,6 @@
 		<Content Include="$(OutputPath)\A2v10.AppCompiler.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<Compile Remove="Source\Sample.cs" />
-		<EmbeddedResource Include="Source\Sample.cs" />
-	</ItemGroup>
-
 	<!--
 	EXTERNAL PACKAGES
     // see also: https://github.com/dotnet/roslyn-sdk/blob/main/samples/CSharp/SourceGenerators/SourceGeneratorSamples/CSharpSourceGeneratorSamples.csproj

@@ -1,0 +1,4 @@
+const template = {
+    properties: {},
+    commands: {}
+};

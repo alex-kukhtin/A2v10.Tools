@@ -3,9 +3,14 @@
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
+		<LangVersion>latest</LangVersion>
 		<Nullable>enable</Nullable>
 		<OutputType>Library</OutputType>
 	</PropertyGroup>
+
+	<ItemGroup>
+	  <TypeScriptCompile Remove="catalog\agent\index.template.ts" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="A2v10.Module.Infrastructure" Version="10.1.8110" />
@@ -27,8 +32,6 @@
 
 
 	<ItemGroup>
-		<Content Update="catalog\agent\index.view.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</Content>
+	  <Content Include="catalog\agent\index.template.ts" />
 	</ItemGroup>
 </Project>
