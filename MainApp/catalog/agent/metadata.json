@@ -1,9 +1,13 @@
 {
+	"name": "Agent",
 	"fields": [
 		{
 			"name": "Code",
 			"length": 50,
 			"required": true
+		},
+		{
+			"name": "Phone"
 		}
 	],
 	"details": [

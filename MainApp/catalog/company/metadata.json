@@ -1,0 +1,14 @@
+{
+	"name": "Company",
+	"fields": [
+		{
+			"name": "Code",
+			"length": 50,
+			"required": true
+		},
+		{
+			"length": 255,
+			"name": "FullName"
+		}
+	]
+}

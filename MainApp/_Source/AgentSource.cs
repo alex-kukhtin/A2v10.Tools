@@ -1,28 +1,33 @@
-﻿using System.Dynamic;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Dynamic;
 
-namespace MainApp.catalog.agent;
+using A2v10.Module.Infrastructure.Impl;
+
+namespace MainApp.Catalog;
 
 // Цей клас має бути згенеровано автоматично.
-public partial class Agent : CatalogBase<Int64>
+public partial class Agent22 : CatalogBase<Int64>
 {
-    public String? Code { get; set; }
-
-    public static Agent FromExpando(ExpandoObject agent)
+    public Agent22(ExpandoObject src) : base(src)  
     {
-        return new Agent();
+        var d = (IDictionary<String, Object?>)src;
+        Code = d.TryGetString("Code");
     }
+
+    [MaxLength(255)]
+    public String? Code { get; set; }
 }
 
 // Цей клас має бути згенеровано автоматично.
 public class ElementProvider
 {
-    private static IReadOnlyDictionary<String, Func<ExpandoObject, IClrCatalogElement>> _elemMap =
-        new Dictionary<String, Func<ExpandoObject, IClrCatalogElement>>(StringComparer.OrdinalIgnoreCase)
-        {
-            ["catalog/agent"] = eo => Agent.FromExpando(eo)
-        }.AsReadOnly();
+    private static IReadOnlyDictionary<String, Func<ExpandoObject, IClrElement>> _elemMap =
+    new Dictionary<String, Func<ExpandoObject, IClrElement>>(StringComparer.OrdinalIgnoreCase)
+    {
+        ["catalog/agent"] = eo => new Agent(eo)
+    }.AsReadOnly();
 
-    public IClrCatalogElement CreateCatalogElement(String typeName, ExpandoObject eo)
+    public IClrElement CreateElement(String typeName, ExpandoObject eo)
     {
         if (_elemMap.TryGetValue(typeName, out var createElem))
             return createElem(eo);

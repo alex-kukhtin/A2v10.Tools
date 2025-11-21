@@ -1,6 +1,15 @@
-﻿namespace MainApp;
+﻿using System.Dynamic;
 
-public interface IClrCatalogElement
+namespace MainApp;
+
+using A2v10.Module.Infrastructure.Impl;
+
+public interface IClrElement
+{
+
+}
+
+public interface IClrCatalogElement : IClrElement
 {
     Func<Task<Boolean>>? BeforeSave { get; }
     Func<Task>? AfterSave { get; }
@@ -9,9 +18,22 @@ public interface IClrCatalogElement
 // Базовий клас для каталогів - має бути в бібліотеці спільних класів
 public class CatalogBase<T> : IClrCatalogElement where T : struct
 {
+    public CatalogBase()
+    {
+    }
+
+    public CatalogBase(ExpandoObject src)
+    {
+        var d = (IDictionary<String, Object?>)src;
+        Id = d.TryGetId<T>("Id");
+        Name = d.TryGetString("Name");
+    }
+
     public T Id { get; init; }
     public String? Name { get; set; }
 
-    public Func<Task<Boolean>>? BeforeSave { get; init; }
-    public Func<Task>? AfterSave { get; init; }
+
+    protected virtual void Init() { }
+    public Func<Task<Boolean>>? BeforeSave { get; protected set; }
+    public Func<Task>? AfterSave { get; protected set; }
 }

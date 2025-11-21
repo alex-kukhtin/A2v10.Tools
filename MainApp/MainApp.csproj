@@ -9,10 +9,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <TypeScriptCompile Remove="catalog\agent\index.template.ts" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="A2v10.Module.Infrastructure" Version="10.1.8110" />
 		<PackageReference Include="A2v10.App.Assets" Version="10.1.8578" />
 		<PackageReference Include="Microsoft.TypeScript.MSBuild" Version="5.9.3">
@@ -27,11 +23,7 @@
 
 
 	<ItemGroup>
-		<AdditionalFiles Include="$(ProjectPath)" />
+		<AdditionalFiles Include="**\*.json" Exclude="bin\**\*.json;obj\**\*.json"/>
 	</ItemGroup>
 
-
-	<ItemGroup>
-	  <Content Include="catalog\agent\index.template.ts" />
-	</ItemGroup>
 </Project>

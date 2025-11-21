@@ -1,6 +1,8 @@
 ﻿// Copyright © 2022-2025 Oleksandr Kukhtin. All rights reserved.
 
 using System.Diagnostics;
+using System.Linq;
+
 
 using Microsoft.CodeAnalysis;
 
@@ -24,11 +26,21 @@ public class SourceGenerator : IIncrementalGenerator
 	*/
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
-        if (!Debugger.IsAttached)
-            Debugger.Launch();
+        //if (!Debugger.IsAttached)
+            //Debugger.Launch();
 
-        var items = context.AdditionalTextsProvider.Where(f => f.Path.EndsWith(".csproj")).Collect();
-        context.RegisterSourceOutput(items, AppContainerBuilder.Build);
-        context.RegisterSourceOutput(items, ClrElementsBuilder.Build);
+        var assemblyName = context.CompilationProvider.Select(static (c, _) => c.Assembly.Name!);
+
+        var items = context.AdditionalTextsProvider.Where(static f => !f.Path.Contains("\\bin\\") && f.Path.EndsWith("metadata.json"))
+            .Select((addFile, canceletionToken) => (path: addFile.Path, content: addFile.GetText(canceletionToken)));
+
+        var module = context.AdditionalTextsProvider.Where(static f => !f.Path.Contains("\\bin\\") && f.Path.EndsWith("module.json"))
+            .Select((addFile, canceletionToken) => (path: addFile.Path, content: addFile.GetText(canceletionToken)));
+
+        var combinedClr = items.Combine(assemblyName).Collect();
+        var combinedModule = module.Combine(assemblyName).Collect();
+
+        //context.RegisterSourceOutput(combined, AppContainerBuilder.Build);
+        context.RegisterSourceOutput(combinedClr, ClrElementsBuilder.Build);
     }
 }
