@@ -19,7 +19,7 @@ public partial class Agent22 : CatalogBase<Int64>
 }
 
 // Цей клас має бути згенеровано автоматично.
-public class ElementProvider
+public class ElementProvider2222
 {
     private static IReadOnlyDictionary<String, Func<ExpandoObject, IClrElement>> _elemMap =
     new Dictionary<String, Func<ExpandoObject, IClrElement>>(StringComparer.OrdinalIgnoreCase)
