@@ -6,13 +6,15 @@ using A2v10.Module.Infrastructure.Impl;
 
 public interface IClrElement
 {
-
 }
-
-public interface IClrCatalogElement : IClrElement
+public interface IClrEventSource
 {
     Func<Task<Boolean>>? BeforeSave { get; }
     Func<Task>? AfterSave { get; }
+}
+
+public interface IClrCatalogElement : IClrElement, IClrEventSource
+{
 }
 
 // Базовий клас для каталогів - має бути в бібліотеці спільних класів

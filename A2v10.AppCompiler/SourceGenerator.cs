@@ -10,6 +10,7 @@ namespace A2v10.AppCompiler;
 
 /*
  * https://github.com/dotnet/roslyn/blob/main/docs/features/source-generators.cookbook.md
+ * https://github.com/dotnet/roslyn/blob/main/docs/features/incremental-generators.md* 
  */
 
 [Generator]

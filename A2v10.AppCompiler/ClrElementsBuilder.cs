@@ -40,13 +40,13 @@ internal class ClrElementsBuilder
             {
                 var sourceText = SourceText.From(CreateText(metajson, nspace, schema), Encoding.UTF8);
                 context.AddSource($"{fileName}.g.cs", sourceText);
-                providedItems.Add($"[\"{String.Join("/", relPath)}\"] = eo => new {nspace}.{schema}.{metajson.Name}(eo)");
+                providedItems.Add($"[\"{String.Join("/", relPath)}\"] = eo => new {nspace}.{schema}.{metajson.Name}(eo.Get<ExpandoObject>(\"{metajson.Name}\"))");
             }
         }
 
         if (providedItems.Count == 0)
             return;
-        var providerSourceText = SourceText.From(CreateProviderModue(providedItems, nspace), Encoding.UTF8);
+        var providerSourceText = SourceText.From(CreateProviderModule(providedItems, nspace), Encoding.UTF8);
         context.AddSource($"_provider.g.cs", providerSourceText);
     }
 
@@ -103,7 +103,7 @@ public partial class {{meta.Name}} : {{schema}}Base<{{idType}}>
     }
 
 
-    static String CreateProviderModue(IReadOnlyList<String> items, String nspace)
+    static String CreateProviderModule(IReadOnlyList<String> items, String nspace)
     {
         var dictItems = String.Join(",\r\n\t\t", items);
         var code =
@@ -113,6 +113,7 @@ $$""""
 #nullable enable
 
 using System.Dynamic;
+using A2v10.Module.Infrastructure.Impl;
 
 namespace {{nspace}};
 

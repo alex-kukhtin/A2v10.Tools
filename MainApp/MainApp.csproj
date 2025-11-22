@@ -9,6 +9,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\A2v10.AppCompiler\A2v10.AppCompiler.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="A2v10.Module.Infrastructure" Version="10.1.8110" />
 		<PackageReference Include="A2v10.App.Assets" Version="10.1.8578" />
 		<PackageReference Include="Microsoft.TypeScript.MSBuild" Version="5.9.3">
@@ -18,12 +22,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\A2v10.AppCompiler\A2v10.AppCompiler.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+		<AdditionalFiles Include="**\*.json" Exclude="bin\**\*.json;obj\**\*.json" />
 	</ItemGroup>
 
-
 	<ItemGroup>
-		<AdditionalFiles Include="**\*.json" Exclude="bin\**\*.json;obj\**\*.json"/>
+	  <AdditionalFiles Remove="tsconfig.json" />
 	</ItemGroup>
 
 </Project>
