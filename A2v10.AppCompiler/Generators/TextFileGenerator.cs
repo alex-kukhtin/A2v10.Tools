@@ -1,9 +1,10 @@
-﻿// Copyright © 2022-2023 Oleksandr Kukhtin. All rights reserved.
+﻿// Copyright © 2022-2026 Oleksandr Kukhtin. All rights reserved.
 
 using System;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
+
 using Microsoft.CodeAnalysis.Text;
 
 namespace A2v10.AppCompiler;
@@ -64,7 +65,7 @@ internal class TextFileGenerator
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-/* Copyright © 2022-2025 Oleksandr Kukhtin. All rights reserved.*/
+/* Copyright © 2022-2026 Oleksandr Kukhtin. All rights reserved.*/
 
 using System;
 using System.IO;

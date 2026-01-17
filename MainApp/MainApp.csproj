@@ -13,8 +13,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="A2v10.Module.Infrastructure" Version="10.1.8110" />
-		<PackageReference Include="A2v10.App.Assets" Version="10.1.8578" />
+		<PackageReference Include="A2v10.Module.Infrastructure" Version="10.1.8620" />
+		<PackageReference Include="A2v10.App.Infrastructure" Version="10.1.8620" />
+		<PackageReference Include="A2v10.App.Assets" Version="10.1.8620" />
 		<PackageReference Include="Microsoft.TypeScript.MSBuild" Version="5.9.3">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -27,6 +28,11 @@
 
 	<ItemGroup>
 	  <AdditionalFiles Remove="tsconfig.json" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="catalog\agent\metadata.json" />
+	  <None Include="catalog\company\metadata.json" />
 	</ItemGroup>
 
 </Project>

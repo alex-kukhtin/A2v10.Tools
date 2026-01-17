@@ -1,4 +1,5 @@
 ﻿
+using A2v10.App.Infrastructure;
 using MainApp;
 using MainApp.Catalog;
 
@@ -16,13 +17,15 @@ internal class Program
         var eo = JsonConvert.DeserializeObject<ExpandoObject>(str)
             ?? throw new InvalidOperationException("Deserialization failed");   
 
-        var p = new MainApp.ElementProvider();
+        var appMetaOpts = new AppMetadataClrOptions();
+        MainApp.StartupClr.Register(appMetaOpts);
+        appMetaOpts.Map.TryGetValue("catalog/agent", out var func);
+        var elem = func(eo, null);
 
-        var elem = p.CreateElement("catalog/agent", eo);
-        if (elem is IClrEventSource clrElem)
+        if (elem is IClrElementEventSource clrElem)
         {
             if (clrElem.BeforeSave != null)
-                await clrElem.BeforeSave();
+                await clrElem.BeforeSave(new CancelToken());
         }
 
         Console.WriteLine(elem.ToString());

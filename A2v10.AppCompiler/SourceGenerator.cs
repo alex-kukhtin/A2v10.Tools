@@ -1,4 +1,4 @@
-﻿// Copyright © 2022-2025 Oleksandr Kukhtin. All rights reserved.
+﻿// Copyright © 2022-2026 Oleksandr Kukhtin. All rights reserved.
 
 using System.Diagnostics;
 using System.Linq;
@@ -41,7 +41,7 @@ public class SourceGenerator : IIncrementalGenerator
         var combinedClr = items.Combine(assemblyName).Collect();
         var combinedModule = module.Combine(assemblyName).Collect();
 
-        //context.RegisterSourceOutput(combined, AppContainerBuilder.Build);
+        context.RegisterSourceOutput(combinedModule, AppContainerBuilder.Build);
         context.RegisterSourceOutput(combinedClr, ClrElementsBuilder.Build);
     }
 }

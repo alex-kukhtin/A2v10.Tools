@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿// Copyright © 2022-2026 Oleksandr Kukhtin. All rights reserved.
+
+using System;
 
 namespace A2v10.AppCompiler;
 
@@ -16,7 +16,7 @@ internal class Constants
         // </auto-generated>
         //------------------------------------------------------------------------------
         
-        /* Copyright © 2025 Oleksandr Kukhtin. All rights reserved.*/
+        /* Copyright © 2025-2026 Oleksandr Kukhtin. All rights reserved.*/
         
         """;
 }

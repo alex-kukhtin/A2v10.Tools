@@ -1,4 +1,4 @@
-﻿// Copyright © 2025 Oleksandr Kukhtin. All rights reserved.
+﻿// Copyright © 2025-2026 Oleksandr Kukhtin. All rights reserved.
 
 using System;
 using System.Collections.Immutable;
@@ -14,15 +14,16 @@ namespace A2v10.AppCompiler;
 internal static class AppContainerBuilder
 {
 
-    public static void Build(SourceProductionContext context, ImmutableArray<AdditionalText> files)
+    public static void Build(SourceProductionContext context, ImmutableArray<((String path, SourceText? content) file, String assembly)> items)
     {
-        if (files.Length == 0)
+        if (items.Length == 0)
             return;
-        var file = files[0];
-        var path = Path.GetDirectoryName(file.Path);
+
+        var file = items[0].file;
+        var path = Path.GetDirectoryName(file.path);
         Debug.WriteLine($"AppPath: {path}");
 
-        var nspace = Path.GetFileNameWithoutExtension(file.Path);
+        var nspace = Path.GetFileNameWithoutExtension(file.path);
 
         context.AddSource("textfiles.g.cs", TextFileGenerator.GetSource(path, nspace,
             [".json", ".js", ".txt", ".xaml", ".css", ".html"]));
@@ -45,7 +46,7 @@ internal static class AppContainerBuilder
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-/* Copyright © 2022-2025 Oleksandr Kukhtin. All rights reserved. */
+/* Copyright © 2022-2026 Oleksandr Kukhtin. All rights reserved. */
 
 #nullable enable
 using System;

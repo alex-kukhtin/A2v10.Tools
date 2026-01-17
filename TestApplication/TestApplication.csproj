@@ -14,6 +14,7 @@
 
 <ItemGroup>
 	<PackageReference Include="Newtonsoft.Json" Version="13.0.4" GeneratePathProperty="true" PrivateAssets="all" />
+	<PackageReference Include="A2v10.App.Infrastructure" Version="10.1.8620" />
 </ItemGroup>
 
 </Project>

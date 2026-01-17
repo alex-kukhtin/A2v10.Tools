@@ -1,4 +1,4 @@
-﻿// Copyright © 2025 Oleksandr Kukhtin. All rights reserved.
+﻿// Copyright © 2025-2026 Oleksandr Kukhtin. All rights reserved.
 
 using System;
 using System.Collections.Generic;
@@ -22,25 +22,25 @@ internal class ClrElementsBuilder
         var nspace = String.Empty;  
         foreach (var pair in items)
         {
-            var file = pair.file;
+            var (path, content) = pair.file;
             nspace = pair.assembly;
 
-            var fullPath = Path.GetDirectoryName(file.path)!;
+            var fullPath = Path.GetDirectoryName(path)!;
             var split = fullPath.Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
             var ix = split.IndexOf(nspace);
             var relPath = split.Skip(ix + 1);
             var fileName = String.Join("_", relPath);
             var schema = relPath.FirstOrDefault().ToSchemaName();
 
-            if (file.content == null)
+            if (content == null)
                 continue;
 
-            var metajson = JsonConvert.DeserializeObject<MetadataJson>(file.content.ToString(), JsonSerializerHelpers.CamelCaseSettings);
+            var metajson = JsonConvert.DeserializeObject<MetadataJson>(content.ToString(), JsonSerializerHelpers.CamelCaseSettings);
             if (metajson != null)
             {
                 var sourceText = SourceText.From(CreateText(metajson, nspace, schema), Encoding.UTF8);
                 context.AddSource($"{fileName}.g.cs", sourceText);
-                providedItems.Add($"[\"{String.Join("/", relPath)}\"] = eo => new {nspace}.{schema}.{metajson.Name}(eo.Get<ExpandoObject>(\"{metajson.Name}\"))");
+                providedItems.Add($"[\"{String.Join("/", relPath)}\"] = (model, serviceProvider)  => new {nspace}.{schema}.{metajson.Name}(serviceProvider, model.Get<ExpandoObject>(\"{metajson.Name}\"))");
             }
         }
 
@@ -57,16 +57,21 @@ internal class ClrElementsBuilder
             foreach (var f in meta.Fields)
             {
                 var len = f.Length > 0 ? $"[MaxLength({f.Length})]\r\n\t" : String.Empty;
-                yield return $"{len}public {f.Type.ToPropertyType()} {f.Name} {{ get; set; }}";
+                var rq = f.Required ? "[Required]\r\n\t" : String.Empty;
+                yield return $"{rq}{len}public {f.Type.ToPropertyType()} {f.Name} {{ get; set; }}";
             }
         }
 
         IEnumerable<String> assignProps()
         {
             foreach (var f in meta.Fields)
-            {
                 yield return $"{f.Name} = d.TryGetString(\"{f.Name}\");";
-            }
+        }
+
+        IEnumerable<String> expProps()
+        {
+            foreach (var f in meta.Fields)
+                yield return $"d[nameof({f.Name})] = {f.Name};";
         }
 
         var idType = "Int64"; // TODO:
@@ -80,7 +85,8 @@ $$""""
 using System.Dynamic;
 using System.ComponentModel.DataAnnotations;
 
-using A2v10.Module.Infrastructure.Impl;
+using A2v10.App.Infrastructure;
+
 
 namespace {{nspace}}.{{schema}};
 
@@ -88,14 +94,28 @@ public partial class {{meta.Name}} : {{schema}}Base<{{idType}}>
 {
     {{String.Join("\r\n\t", props())}}
 
-    public {{meta.Name}}() : base() {}
-
-    public {{meta.Name}}(ExpandoObject src) : base(src)
+    public {{meta.Name}}(IServiceProvider serviceProvider) : base(serviceProvider) 
     {
-        var d = (IDictionary<String, Object?>)src;
-        {{String.Join("\r\n\t\t", assignProps())}}
+        Init();
+    }
+
+    public {{meta.Name}}(IServiceProvider serviceProvider, ExpandoObject? src) : base(serviceProvider, src)
+    {
+        if (src != null) {
+            var d = (IDictionary<String, Object?>)src;
+            {{String.Join("\r\n\t\t\t", assignProps())}}
+        }
         Init();
     }   
+
+    public override void ToExpando()
+    {
+        base.ToExpando();
+        if (_source == null)
+            return;
+        var d = (IDictionary<String, Object?>) _source;
+        {{String.Join("\r\n\t\t", expProps())}}
+    }
 }
 """";
 
@@ -113,24 +133,23 @@ $$""""
 #nullable enable
 
 using System.Dynamic;
-using A2v10.Module.Infrastructure.Impl;
+
+using A2v10.App.Infrastructure;
 
 namespace {{nspace}};
 
-public class ElementProvider
+public static class StartupClr
 {
-    private static IReadOnlyDictionary<String, Func<ExpandoObject, IClrElement>> _elemMap =
-    new Dictionary<String, Func<ExpandoObject, IClrElement>>(StringComparer.OrdinalIgnoreCase)
+    private static readonly Dictionary<String, Func<ExpandoObject, IServiceProvider, IClrElement>> _elemMap = 
+        new Dictionary<String, Func<ExpandoObject, IServiceProvider, IClrElement>>()
     {
         {{dictItems}}
-    }.AsReadOnly();
+    };
 
-    public IClrElement CreateElement(String typeName, ExpandoObject eo)
+    public static void Register(AppMetadataClrOptions opts)
     {
-        if (_elemMap.TryGetValue(typeName, out var createElem))
-            return createElem(eo);
-        throw new InvalidOperationException($"Unknown type name: {typeName}");
-    }   
+        opts.AddRange(_elemMap);
+    }
 }
 
 """";

@@ -1,4 +1,6 @@
 ﻿
+using A2v10.App.Infrastructure;
+
 namespace MainApp.Catalog;
 
 // Цей клас ми пишемо вручну!
@@ -10,12 +12,12 @@ public partial class Agent
         AfterSave = OnAfterSave;
     }
 
-    private Task<Boolean> OnBeforeSave()
+    private Task OnBeforeSave(CancelToken token)
     {
         Code = Code?.Trim();    
         Name = Name?.Trim();
         Code += "_BEFORE_SAVE";
-        return Task.FromResult(true);
+        return Task.CompletedTask;
     }
 
     private Task OnAfterSave()
