@@ -13,8 +13,10 @@ namespace A2v10.AppCompiler;
  * https://github.com/dotnet/roslyn/blob/main/docs/features/incremental-generators.md* 
  */
 
+// VS 2026 ONLY!!!!
+
 [Generator]
-public class SourceGenerator : IIncrementalGenerator
+public class IncSourceGenerator : IIncrementalGenerator
 {
     /*
 	private static readonly DiagnosticDescriptor Info = 
