@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<ImplicitUsings>disable</ImplicitUsings>
-		<Version>10.1.8200</Version>
+		<Version>10.1.8220</Version>
 		<LangVersion>Latest</LangVersion>
 		<Nullable>enable</Nullable>
 		<BuildOutputTargetFolder>tasks</BuildOutputTargetFolder>
@@ -54,7 +54,7 @@
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Build.Utilities.Core" Version="18.0.2" PrivateAssets="All" ExcludeAssets="Runtime" />
 		<PackageReference Update="@(PackageReference)" PrivateAssets="All" Pack="True" />
-		<PackageReference Update="Microsoft.Build.Utilities.Core" Version="18.0.2">
+		<PackageReference Update="Microsoft.Build.Utilities.Core" Version="18.4.0">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>

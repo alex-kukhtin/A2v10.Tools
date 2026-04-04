@@ -1,21 +1,22 @@
-﻿// Copyright © 2023 Oleksandr Kukhtin. All rights reserved.
+﻿// Copyright © 2023-2026 Oleksandr Kukhtin. All rights reserved.
 
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using A2v10.BuildSql;
+
 using Microsoft.Build.Framework;
-using Microsoft.Build.Utilities;
+
+using A2v10.BuildSql;
 
 namespace A2v10.Sql.MSBuild;
 
 internal class SqlFileBuilder
 {
 	private readonly String _path;
-	private readonly TaskLoggingHelper _log;
+	private readonly ISqlLogger _log;
 
-	public SqlFileBuilder(String path, TaskLoggingHelper log)
+	internal SqlFileBuilder(String path, ISqlLogger log)
 	{
 		_path = path;
 		_log = log;
@@ -62,12 +63,18 @@ internal class SqlFileBuilder
 			fw = null;
 			sw.Write($"/* {item.OutputFile} */{nl}{nl}");
 			foreach (var f in item.InputFiles)
-			{
-				var inputPath = Path.Combine(_path, f);
-				_log.LogMessage(MessageImportance.High, $"\t{f}");
-				var inputText = new StringBuilder(File.ReadAllText(inputPath));
-				sw.Write(inputText.ToString());
-				sw.WriteLine();
+            {
+				foreach (var resolvedPath in ResolveInputFiles(f))
+				{
+                    var relativePath = resolvedPath.StartsWith(_path)
+                        ? resolvedPath.Substring(_path.Length).TrimStart(Path.DirectorySeparatorChar)
+                        : resolvedPath;
+                    relativePath = relativePath.Replace('\\', '/');
+                    _log.LogMessage(MessageImportance.High, $"\t{relativePath}"); 
+					var inputText = new StringBuilder(File.ReadAllText(resolvedPath));
+					sw.Write(inputText.ToString());
+					sw.WriteLine();
+				}
 			}
 		}
 		finally
@@ -75,4 +82,29 @@ internal class SqlFileBuilder
 			fw?.Close();
 		}
 	}
+
+    IEnumerable<String> ResolveInputFiles(String pattern)
+    {
+        const String recursiveMarker = "/**/";
+
+        int markerIndex = pattern.IndexOf(recursiveMarker);
+        if (markerIndex < 0)
+        {
+            // general
+            yield return Path.Combine(_path, pattern);
+            yield break;
+        }
+
+        String baseDir = pattern.Substring(0, markerIndex);
+        String fileName = pattern.Substring(markerIndex + recursiveMarker.Length);
+
+        String searchRoot = Path.Combine(_path, baseDir);
+        if (!Directory.Exists(searchRoot))
+            yield break;
+
+        foreach (var file in Directory.EnumerateFiles(searchRoot, fileName, SearchOption.AllDirectories))
+        {
+            yield return file;
+        }
+    }
 }

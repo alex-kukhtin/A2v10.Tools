@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\A2v10.BuildSql\A2v10.BuildSql.csproj" />
     <ProjectReference Include="..\MainApp\MainApp.csproj" />
   </ItemGroup>
 

@@ -2,7 +2,7 @@
 
 using System;
 using System.IO;
-
+using A2v10.BuildSql;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 
@@ -32,7 +32,7 @@ public class Build : Task
 
 		try
 		{
-			var sqlBuilder = new SqlFileBuilder(ProjectDir, Log);
+			var sqlBuilder = new SqlFileBuilder(ProjectDir, new SqlMsBuildLogger(Log));
 			sqlBuilder.Process();
 			Log.LogMessage(MessageImportance.High, "Build sql completed");
 			return true;

@@ -1,5 +1,6 @@
 ﻿
 using A2v10.App.Infrastructure;
+using A2v10.BuildSql;
 using MainApp;
 using MainApp.Catalog;
 
@@ -13,6 +14,7 @@ internal class Program
 {
     static async Task Main(string[] args)
     {
+        /*
         var str = "{\"Agent\": {\"Id\": 244, \"Name\":\"Agent Name\", \"Code\":\"100\"}}";
         var eo = JsonConvert.DeserializeObject<ExpandoObject>(str)
             ?? throw new InvalidOperationException("Deserialization failed");   
@@ -29,5 +31,7 @@ internal class Program
         }
 
         Console.WriteLine(elem.ToString());
+        */
+        //TestBuilder.Build(@"C:\A2v10_Net6\A2v10.Standard.Modules\MainApp");
     }
 }
