@@ -26,7 +26,7 @@ internal static class AppContainerBuilder
         var nspace = Path.GetFileNameWithoutExtension(file.path);
 
         context.AddSource("textfiles.g.cs", TextFileGenerator.GetSource(path, nspace,
-            [".json", ".js", ".txt", ".xaml", ".css", ".html"]));
+            [".json", ".js", ".txt", ".xaml", ".xamla", ".css", ".html"]));
 
         var sb = new StringBuilder(MAIN_CODE);
         sb.Replace("$(namespace)", nspace);

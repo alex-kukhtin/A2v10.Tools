@@ -4,8 +4,8 @@
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<LangVersion>latest</LangVersion>
 		<Nullable>enable</Nullable>
-		<Version>10.1.8620</Version>
-		<PackageId>A2v10.AppCompiler</PackageId>
+		<Version>10.1.8630</Version>
+		<PackageId>A2v10.AppCompiler2026</PackageId>
 		<Product>A2v10</Product>
 		<Authors>Oleksandr Kukthin</Authors>
 		<Copyright>Copyright © 2022-2026 Oleksandr Kukhtin. All rights reserved.</Copyright>
@@ -21,8 +21,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0" PrivateAssets="all" />
-		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="5.0.0" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="5.3.0" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="5.3.0" PrivateAssets="all" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" GeneratePathProperty="true" PrivateAssets="all" />
 	</ItemGroup>
 
@@ -41,9 +41,6 @@
 	<ItemGroup>
 		<!-- Package the Newtonsoft.Json dependency alongside the generator assembly -->
 		<None Include="$(PkgNewtonsoft_Json)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
-	</ItemGroup>
-	<ItemGroup>
-		<None Include="build\A2v10.AppCompiler.props" Pack="True" PackagePath="build" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Compile Remove="bin\**" />

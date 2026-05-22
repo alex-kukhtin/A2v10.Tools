@@ -23,16 +23,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<AdditionalFiles Include="**\*.json" Exclude="bin\**\*.json;obj\**\*.json" />
+		<AdditionalFiles Include="**\*.json" Exclude="bin\**\*.js;obj\**\*.json" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <AdditionalFiles Remove="tsconfig.json" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <None Include="catalog\agent\metadata.json" />
-	  <None Include="catalog\company\metadata.json" />
 	</ItemGroup>
 
 </Project>

@@ -18,6 +18,7 @@ internal record Field
 
 internal record MetadataJson
 {
+    public Boolean UseServerEvents { get; set; }
     public String Name { get; set; } = default!;
     public Field[] Fields { get; set; } = [];
 }

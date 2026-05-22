@@ -36,7 +36,7 @@ internal class ClrElementsBuilder
                 continue;
 
             var metajson = JsonConvert.DeserializeObject<MetadataJson>(content.ToString(), JsonSerializerHelpers.CamelCaseSettings);
-            if (metajson != null)
+            if (metajson != null && metajson.UseServerEvents)
             {
                 var sourceText = SourceText.From(CreateText(metajson, nspace, schema), Encoding.UTF8);
                 context.AddSource($"{fileName}.g.cs", sourceText);
