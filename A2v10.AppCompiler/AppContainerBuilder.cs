@@ -4,6 +4,7 @@ using System;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 using Microsoft.CodeAnalysis;
@@ -13,28 +14,48 @@ namespace A2v10.AppCompiler;
 
 internal static class AppContainerBuilder
 {
-    public static void Build(SourceProductionContext context, ImmutableArray<((String path, SourceText content) file, String assembly)> items)
+
+    static readonly DiagnosticDescriptor NoFilesDiagnostic = new(
+        id: "A2AC001",
+        title: "No files to compile",
+        messageFormat: "No files were found to compile. Check <AdditionalFiles> in the project file.",
+        category: "AppCompiler",
+        defaultSeverity: DiagnosticSeverity.Warning,
+        isEnabledByDefault: true);
+
+    static readonly DiagnosticDescriptor NoModelJsonDiagnostic = new(
+        id: "A2AC002",
+        title: "No module.json found",
+        messageFormat: "The file module.json not found. Check project root.",
+        category: "AppCompiler",
+        defaultSeverity: DiagnosticSeverity.Warning,
+        isEnabledByDefault: true);
+
+    public static void Build(SourceProductionContext context, ImmutableArray<(String path, String content)> items)
     {
-        if (items.Length == 0)
+        if (items.Length == 0) {
+            context.ReportDiagnostic(Diagnostic.Create(NoFilesDiagnostic, Location.None));
             return;
+        }
 
-        /*
-		<AdditionalFiles Include="$(ProjectPath)"/> <- one csporj.path		
-		 */
+        var (path, content) = items.FirstOrDefault(x => x.path.EndsWith("module.json"));
 
-        var file = items[0].file;
-        var path = Path.GetDirectoryName(file.path);
-        Debug.WriteLine($"AppPath: {path}");
+        if (String.IsNullOrEmpty(path))
+        {
+            context.ReportDiagnostic(Diagnostic.Create(NoModelJsonDiagnostic, Location.None));
+            return; // module.json not found
+        }
 
-        var nspace = Path.GetFileNameWithoutExtension(file.path);
+		var projectDir = Path.GetDirectoryName(path);
 
-        context.AddSource("textfiles.g.cs", TextFileGenerator.GetSource(path, nspace,
-            [".json", ".js", ".txt", ".xaml", ".vxaml", ".css", ".html"]));
+        var nspace = Path.GetFileNameWithoutExtension(projectDir);
+
+        context.AddSource("textfiles.g.cs", TextFileGenerator.GetSource(projectDir, items, nspace));
 
         var sb = new StringBuilder(MAIN_CODE);
         sb.Replace("$(namespace)", nspace);
-        sb.Replace("$(path)", Path.GetFileName(path));
-        ModuleJson.ReplaceMacros(path, sb);
+        //sb.Replace("$(path)", Path.GetFileName(path));
+		ModuleJson.ReplaceMacros(content, sb);
         context.AddSource("appcontainer.g.cs", SourceText.From(sb.ToString(), Encoding.UTF8));
     }
 

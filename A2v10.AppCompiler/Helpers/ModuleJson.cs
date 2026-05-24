@@ -1,7 +1,6 @@
 ﻿// Copyright © 2023-2025 Oleksandr Kukhtin. All rights reserved.
 
 using System;
-using System.IO;
 using System.Text;
 
 using Newtonsoft.Json;
@@ -20,10 +19,8 @@ internal record ModuleDef
 
 internal class ModuleJson
 {
-	public static void ReplaceMacros(String path, StringBuilder sb)
+	public static void ReplaceMacros(String json, StringBuilder sb)
 	{
-		var fileName = Path.Combine(path, "module.json");
-		var json = File.ReadAllText(fileName);
 		var def = JsonConvert.DeserializeObject<ModuleDef>(json, JsonSerializerHelpers.CamelCaseSettings)
 			?? throw new InvalidOperationException("Invalid module.json");
 		sb.Replace("$(id)", def.Id);

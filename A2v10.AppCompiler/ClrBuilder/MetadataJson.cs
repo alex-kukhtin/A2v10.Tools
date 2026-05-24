@@ -1,8 +1,12 @@
 ﻿// Copyright © 2025-2026 Oleksandr Kukhtin. All rights reserved.
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 
 namespace A2v10.AppCompiler;
+
 
 public enum FieldType
 {
@@ -20,5 +24,5 @@ internal record MetadataJson
 {
     public Boolean UseServerEvents { get; set; }
     public String Name { get; set; } = default!;
-    public Field[] Fields { get; set; } = [];
+    public  Field[] Fields { get; set; } = [];
 }

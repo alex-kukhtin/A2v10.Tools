@@ -1,9 +1,9 @@
 ﻿
-using A2v10.App.Infrastructure;
 
 namespace MainApp.Catalog;
 
 // Цей клас ми пишемо вручну!
+[ServerLogic] // <- Герерує класи для серверної обробки!
 public partial class Agent
 {
     protected override void Init()
