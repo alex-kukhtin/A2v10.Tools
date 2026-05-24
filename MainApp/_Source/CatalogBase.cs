@@ -4,27 +4,27 @@ namespace MainApp;
 
 using A2v10.Module.Infrastructure.Impl;
 
-public interface IClrElement22
+public interface IClrElement
 {
 }
-public interface IClrEventSource22
+public interface IClrEventSource
 {
     Func<Task<Boolean>>? BeforeSave { get; }
     Func<Task>? AfterSave { get; }
 }
 
-public interface IClrCatalogElement22 : IClrElement22, IClrEventSource22
+public interface IClrCatalogElement : IClrElement, IClrEventSource
 {
 }
 
 // Базовий клас для каталогів - має бути в бібліотеці спільних класів
-public class CatalogBase22<T> : IClrCatalogElement22 where T : struct
+public class CatalogBase<T> : IClrCatalogElement where T : struct
 {
-    public CatalogBase22()
+    public CatalogBase()
     {
     }
 
-    public CatalogBase22(ExpandoObject? src)
+    public CatalogBase(ExpandoObject? src)
     {
         if (src == null)
             return;

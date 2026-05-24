@@ -13,11 +13,14 @@ namespace A2v10.AppCompiler;
 
 internal static class AppContainerBuilder
 {
-
-    public static void Build(SourceProductionContext context, ImmutableArray<((String path, SourceText? content) file, String assembly)> items)
+    public static void Build(SourceProductionContext context, ImmutableArray<((String path, SourceText content) file, String assembly)> items)
     {
         if (items.Length == 0)
             return;
+
+        /*
+		<AdditionalFiles Include="$(ProjectPath)"/> <- one csporj.path		
+		 */
 
         var file = items[0].file;
         var path = Path.GetDirectoryName(file.path);
@@ -26,7 +29,7 @@ internal static class AppContainerBuilder
         var nspace = Path.GetFileNameWithoutExtension(file.path);
 
         context.AddSource("textfiles.g.cs", TextFileGenerator.GetSource(path, nspace,
-            [".json", ".js", ".txt", ".xaml", ".xamla", ".css", ".html"]));
+            [".json", ".js", ".txt", ".xaml", ".vxaml", ".css", ".html"]));
 
         var sb = new StringBuilder(MAIN_CODE);
         sb.Replace("$(namespace)", nspace);

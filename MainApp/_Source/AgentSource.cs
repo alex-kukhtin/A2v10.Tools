@@ -6,9 +6,9 @@ using A2v10.Module.Infrastructure.Impl;
 namespace MainApp.Catalog;
 
 // Цей клас має бути згенеровано автоматично.
-public partial class Agent22 : CatalogBase22<Int64>
+public partial class Agent : CatalogBase<Int64>
 {
-    public Agent22(ExpandoObject src) : base(src)  
+    public Agent(ExpandoObject src) : base(src)  
     {
         var d = (IDictionary<String, Object?>)src;
         Code = d.TryGetString("Code");
@@ -21,13 +21,13 @@ public partial class Agent22 : CatalogBase22<Int64>
 // Цей клас має бути згенеровано автоматично.
 public class ElementProvider2222
 {
-    private static IReadOnlyDictionary<String, Func<ExpandoObject, IClrElement22>> _elemMap =
-    new Dictionary<String, Func<ExpandoObject, IClrElement22>>(StringComparer.OrdinalIgnoreCase)
+    private static IReadOnlyDictionary<String, Func<ExpandoObject, IClrElement>> _elemMap =
+    new Dictionary<String, Func<ExpandoObject, IClrElement>>(StringComparer.OrdinalIgnoreCase)
     {
-        ["catalog/agent"] = eo => new Agent22(eo)
+        ["catalog/agent"] = eo => new Agent(eo)
     }.AsReadOnly();
 
-    public IClrElement22 CreateElement(String typeName, ExpandoObject eo)
+    public IClrElement CreateElement(String typeName, ExpandoObject eo)
     {
         if (_elemMap.TryGetValue(typeName, out var createElem))
             return createElem(eo);

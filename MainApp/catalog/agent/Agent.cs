@@ -12,12 +12,12 @@ public partial class Agent
         AfterSave = OnAfterSave;
     }
 
-    private Task OnBeforeSave(CancelToken token)
+    private Task<Boolean> OnBeforeSave()
     {
         Code = Code?.Trim();    
         Name = Name?.Trim();
         Code += "_BEFORE_SAVE";
-        return Task.CompletedTask;
+        return Task.FromResult(true);
     }
 
     private Task OnAfterSave()

@@ -52,7 +52,7 @@ internal class TextFileGenerator
                 text = PackText(text);
             statement = Encoder.EncodeBytes(text);
         }
-        return $"\tstatic byte[] {file.Identifier}() => {statement};";
+        return $"\tstatic Byte[] {file.Identifier}() => {statement};";
     }
 
     private const String HEADER = @"
@@ -102,7 +102,7 @@ public class TextFilesContainer
 		return _textMap.ContainsKey(path);
 	}
 
-	private readonly Dictionary<String, Func<byte[]>> _textMap = new()
+	private readonly Dictionary<String, Func<Byte[]>> _textMap = new()
 	{
 ";
 }

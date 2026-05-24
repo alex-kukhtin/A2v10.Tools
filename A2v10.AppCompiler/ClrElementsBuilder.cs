@@ -20,10 +20,10 @@ internal class ClrElementsBuilder
     {
         var providedItems = new List<String>();
         var nspace = String.Empty;  
-        foreach (var pair in items)
+        foreach (var (file, assembly) in items)
         {
-            var (path, content) = pair.file;
-            nspace = pair.assembly;
+            var (path, content) = file;
+            nspace = assembly;
 
             var fullPath = Path.GetDirectoryName(path)!;
             var split = fullPath.Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
