@@ -50,7 +50,7 @@ public class SourceGenerator : ISourceGenerator
 		*/
 
 		context.AddSource("textfiles.g.cs", TextFileGenerator.GetSource(path, nspace,
-			[".json", ".js", ".txt", ".xaml", ".css", ".html"]));
+			[".json", ".js", ".txt", ".xaml", ".vxaml", ".css", ".html"]));
 
 		var sb = new StringBuilder(MAIN_CODE);
 		sb.Replace("$(namespace)", nspace);
@@ -86,7 +86,7 @@ public class SourceGenerator : ISourceGenerator
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-/* Copyright © 2022-2024 Oleksandr Kukhtin. All rights reserved. */
+/* Copyright © 2022-2026 Oleksandr Kukhtin. All rights reserved. */
 
 #nullable enable
 using System;
