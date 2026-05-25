@@ -14,7 +14,7 @@ internal static class DirectoryFilter
     static readonly String TSCONFIG_PART = $"{Path.DirectorySeparatorChar}tsconfig.json";
     static readonly String METADATAJSON_PART = $"{Path.DirectorySeparatorChar}metadata.json";
 
-    public static Boolean InclideFile(AdditionalText f)
+    internal static Boolean IncludeFile(AdditionalText f)
     {
         return !f.Path.Contains(BIN_PART, StringComparison.OrdinalIgnoreCase) &&
             !f.Path.Contains(OBJ_PART, StringComparison.OrdinalIgnoreCase) &&
@@ -23,14 +23,14 @@ internal static class DirectoryFilter
             !f.Path.EndsWith(TSCONFIG_PART, StringComparison.OrdinalIgnoreCase);
     }
 
-    public static Boolean IsMetadataFile(AdditionalText f)
+    internal static Boolean IsMetadataFile(AdditionalText f)
     {
-        return InclideFile(f) && f.Path.EndsWith(METADATAJSON_PART, StringComparison.OrdinalIgnoreCase);
+        return IncludeFile(f) && f.Path.EndsWith(METADATAJSON_PART, StringComparison.OrdinalIgnoreCase);
     }
 
-    public static String NormalizePath(String? a) => a?.Replace('\\', '/').ToLowerInvariant() ?? String.Empty;
+    internal static String NormalizePath(String? a) => a?.Replace('\\', '/').ToLowerInvariant() ?? String.Empty;
 
-    public static Boolean IsDirectoryEqual(String? a, String? b)
+    internal static Boolean IsDirectoryEqual(String? a, String? b)
     {
         if (a is null || b is null)
             return false;
@@ -43,4 +43,23 @@ internal static class DirectoryFilter
 
     public static String DirectoryName(String filePath)
         => DirectoryFilter.NormalizePath(Path.GetDirectoryName(filePath));
+
+    public static String RelativeDirectory(String dir, String ns)
+    {
+        var ix = dir.IndexOf(ns, 0, StringComparison.OrdinalIgnoreCase);
+        if (ix == -1) 
+            return dir;
+        return dir.Substring(ix + ns.Length + 1);
+    }
+
+    public static String RelativeDirectorySegment(String dir, String ns)
+    {
+        var rel = RelativeDirectory(dir, ns);
+        if (String.IsNullOrEmpty(rel))
+            return "Undefined";
+        var spl = rel.Split('/');
+        if (spl.Length > 0)
+            return spl[0];
+        return "Undefined";
+    }
 }

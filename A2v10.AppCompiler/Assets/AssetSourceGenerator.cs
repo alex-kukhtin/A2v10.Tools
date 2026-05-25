@@ -24,7 +24,7 @@ public class AssetSourceGenerator : IIncrementalGenerator
             //Debugger.Launch();
 
         var files = context.AdditionalTextsProvider
-            .Where(DirectoryFilter.InclideFile)
+            .Where(DirectoryFilter.IncludeFile)
             .Select(static (addFile, canceletionToken) =>
                 (path: addFile.Path, content: addFile.GetText(canceletionToken)!.ToString()));
 

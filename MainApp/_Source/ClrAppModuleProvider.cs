@@ -1,4 +1,7 @@
-﻿namespace MainApp;
+﻿using System;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace MainApp;
 
 public class ClrAppModuleFactory
 {
@@ -12,7 +15,7 @@ public class ClrAppModuleProvider
 
     public void test()
     {
-        var ag = new MainApp.Catalog.Agent(null);
+        var ag = new MainApp.Agent(null);
     }
 }
 

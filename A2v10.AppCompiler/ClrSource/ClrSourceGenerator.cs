@@ -53,13 +53,20 @@ public class ClrSourceGenerator : IIncrementalGenerator
     {
 
         //if (!Debugger.IsAttached)
-            //Debugger.Launch();
+        //Debugger.Launch();
+
+        var rootNs = context.AnalyzerConfigOptionsProvider
+            .Select(static (provider, _) =>
+                provider.GlobalOptions.TryGetValue("build_property.RootNamespace", out var v)
+                    ? v
+                    : "Generated"); // фолбек
 
         context.RegisterPostInitializationOutput(static ctx =>
         {
             ctx.AddSource("markerattr.g.cs", AttributeSource);
             ctx.AddSource("usingattr.g.cs", GlobalUsingSource);
         });
+
 
         var attrName = "Generated.ServerLogicAttribute";
 
@@ -105,7 +112,8 @@ public class ClrSourceGenerator : IIncrementalGenerator
         // collection -> flow
         var flat = pairs.SelectMany(static (collection, _) => collection);
 
-        context.RegisterSourceOutput(flat.Collect(), ClrElementsBuilder.Build);
+        context.RegisterSourceOutput(flat.Collect().Combine(rootNs),  
+            static (ctx, data) => ClrElementsBuilder.Build(ctx, data.Left, data.Right));
     }
     private static ClassModel ExtractClassModel(GeneratorAttributeSyntaxContext context)
     {

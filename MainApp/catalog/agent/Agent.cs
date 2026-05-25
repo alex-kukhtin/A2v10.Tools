@@ -1,6 +1,9 @@
 ﻿
 
-namespace MainApp.Catalog;
+using System;
+using System.Threading.Tasks;
+
+namespace MainApp;
 
 // Цей клас ми пишемо вручну!
 [ServerLogic] // <- Герерує класи для серверної обробки!
@@ -10,8 +13,8 @@ public partial class Agent
     {
         BeforeSave = OnBeforeSave;
         AfterSave = OnAfterSave;
-    }
 
+    }
     private Task<Boolean> OnBeforeSave()
     {
         Code = Code?.Trim();    

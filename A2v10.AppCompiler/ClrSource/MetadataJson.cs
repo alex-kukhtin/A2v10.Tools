@@ -10,7 +10,7 @@ namespace A2v10.AppCompiler;
 
 #region Platform metadata
 
-public enum RawFieldType
+internal enum RawFieldType
 {
     String
 }
@@ -32,14 +32,11 @@ internal record RawMetadataJson
 // FLAT! For Roslyn Equals!
 internal record MetadataJson
 {
-    // TODO: KILL Name
-    public String Name { get; init; } = String.Empty;
     public String Directory { get; init; } = default!;
     public String Fields { get; private set; } = String.Empty;
     public String? Error { get; private set; }
 
     public Boolean IsValid => String.IsNullOrEmpty(Error);
-
 
     public void FromRaw(RawMetadataJson raw)
     {

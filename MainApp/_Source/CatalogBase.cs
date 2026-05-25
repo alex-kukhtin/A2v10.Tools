@@ -2,6 +2,9 @@
 
 namespace MainApp;
 
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using A2v10.App.Infrastructure;
 using A2v10.Module.Infrastructure.Impl;
 

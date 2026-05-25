@@ -8,6 +8,6 @@ namespace Generated;
 public class Test
 {
     void Method() { 
-        var ag = new MainApp.Catalog.Agent(null, null);
+        var ag = new MainApp.Agent(null, null);
     }
 }

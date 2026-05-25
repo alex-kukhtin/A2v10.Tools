@@ -9,33 +9,32 @@ using Microsoft.CodeAnalysis;
 
 namespace A2v10.AppCompiler;
 
-/* TODO:
- * 1. Relative Path!
- * 2. Base Element
- */
 internal class ClrElementsBuilder
 {
-    public static void Build(SourceProductionContext context, ImmutableArray<(ClassModel model, MetadataJson meta)> items)
+    public static void Build(SourceProductionContext context, ImmutableArray<(ClassModel model, MetadataJson meta)> items, String ns)
     {
         if (items.Length == 0)
             return;
 
         var allElems = items.Select((itm) => 
-            $"""["{itm.model.Directory}"] = (model, serviceProvider) => new {itm.model.Namespace}.{itm.model.Name}(serviceProvider, model.Get<ExpandoObject>("{itm.model.Name}"))""");
+            $"""["{DirectoryFilter.RelativeDirectory(itm.model.Directory, ns)}"] = (model, sp) => new {itm.model.Namespace}.{itm.model.Name}(sp, model.Get<ExpandoObject>("{itm.model.Name}"))""");
 
-        context.AddSource("register.g.cs", CreateProviderModule(allElems));
+        context.AddSource("register.g.cs", CreateProviderModule(allElems, ns));
 
         foreach (var itm in items)
         {
             var meta = itm.meta.ToRaw();
             var cls = itm.model;
             var fileName = $"_{cls.Name.ToLowerInvariant()}.g.cs";
-            context.AddSource(fileName, CreateText(cls, meta));
+            context.AddSource(fileName, CreateText(cls, meta, ns));
         }
     }
 
-    static String CreateText(ClassModel cls, RawMetadataJson meta)
+    static String CreateText(ClassModel cls, RawMetadataJson meta, String ns)
     {
+        var baseClass = DirectoryFilter.RelativeDirectorySegment(cls.Directory, ns);
+        baseClass = Char.ToUpperInvariant(baseClass[0]) + baseClass.Substring(1);
+
         IEnumerable<String> props()
         {
             foreach (var f in meta.Fields)
@@ -63,23 +62,25 @@ internal class ClrElementsBuilder
 
         #nullable enable
 
+        using System;
         using System.Dynamic;
+        using System.Collections.Generic;
         using System.ComponentModel.DataAnnotations;
 
         using A2v10.App.Infrastructure;
 
         namespace {{cls.Namespace}};
 
-        public partial class {{cls.Name}} : CatalogBase<Int64>
+        public partial class {{cls.Name}} : {{baseClass}}Base<Int64>
         {
             {{String.Join("\r\n\t", props())}}
 
-            public {{cls.Name}}(IServiceProvider serviceProvider) : base(serviceProvider) 
+            public {{cls.Name}}(IServiceProvider sp) : base(sp) 
             {
                 Init();
             }
 
-            public {{cls.Name}}(IServiceProvider serviceProvider, ExpandoObject? src) : base(serviceProvider, src)
+            public {{cls.Name}}(IServiceProvider sp, ExpandoObject? src) : base(sp, src)
             {
                 if (src != null) {
                     var d = (IDictionary<String, Object?>)src;
@@ -102,7 +103,7 @@ internal class ClrElementsBuilder
     }
 
 
-    static String CreateProviderModule(IEnumerable<String> items)
+    static String CreateProviderModule(IEnumerable<String> items, String ns)
     {
         var dictItems = String.Join(",\r\n\t\t", items);
         var code =
@@ -111,10 +112,13 @@ internal class ClrElementsBuilder
 
         #nullable enable
 
+        using System;
         using System.Dynamic;
+        using System.Collections.Generic;
+
         using A2v10.App.Infrastructure;
 
-        namespace Generated;
+        namespace {{ns}};
 
         public static class StartupClr
         {

@@ -6,7 +6,7 @@ namespace A2v10.AppCompiler;
 
 internal static class MetadataExtensions
 {
-    public static String ToPropertyType(this RawFieldType ft) => ft switch
+    internal static String ToPropertyType(this RawFieldType ft) => ft switch
     {
         RawFieldType.String => "String?",
         _ => $"Object /*{ft}*/"

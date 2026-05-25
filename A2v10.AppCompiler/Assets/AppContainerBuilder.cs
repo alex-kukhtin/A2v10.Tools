@@ -37,7 +37,7 @@ internal static class AppContainerBuilder
             return;
         }
 
-        var (path, content) = items.FirstOrDefault(x => x.path.EndsWith("module.json"));
+        var (path, content) = items.FirstOrDefault(static x => x.path.EndsWith($"{Path.DirectorySeparatorChar}module.json"));
 
         if (String.IsNullOrEmpty(path))
         {
