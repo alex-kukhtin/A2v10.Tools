@@ -9,6 +9,11 @@ public class ClrAppModuleFactory
 
 public class ClrAppModuleProvider
 {
+
+    public void test()
+    {
+        var ag = new MainApp.Catalog.Agent(null);
+    }
 }
 
 public static class ServiceExtensions

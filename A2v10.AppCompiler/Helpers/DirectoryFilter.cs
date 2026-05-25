@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
+using System;
 using System.IO;
-using System.Text;
 using Microsoft.CodeAnalysis;
 
 namespace A2v10.AppCompiler;
