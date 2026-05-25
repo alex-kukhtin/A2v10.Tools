@@ -36,9 +36,9 @@ internal class TextFileGenerator
     }
 
 
-    public static SourceText GetSource(String basePath, ImmutableArray<(String path, String content)> items)
+    public static SourceText GetSource(String basePath, ImmutableArray<(String path, String content)> items, String ns)
     {
-        var sb = new StringBuilder(HEADER);
+        var sb = new StringBuilder(HEADER.Replace("$namespace$", ns));
         var sbDict = new StringBuilder();
         var sbBody = new StringBuilder();
         foreach (var (path, content) in items)
@@ -91,17 +91,17 @@ internal class TextFileGenerator
 
     using A2v10.Module.Infrastructure.Impl;
 
-    namespace Generated;
+    namespace $namespace$;
 
     public class TextFilesContainer 
     {
-        public String Get(String path) {
+        public String? Get(String path) {
             if (_textMap.TryGetValue(path, out var textFile))
                 return DecodeHelpers.Decode(textFile());
             return null;
         }
 
-        public Stream GetStream(String path) {
+        public Stream? GetStream(String path) {
             if (_textMap.TryGetValue(path, out var textFile))
                 return DecodeHelpers.DecodeStream(textFile());
             return null;

@@ -48,6 +48,8 @@ internal record MetadataJson
         static RawField FromString(String ss)
         {
             var x = ss.Split('\b');
+            if (x.Length != 3)
+                return new RawField();
 
             return new RawField()
             {
@@ -63,15 +65,23 @@ internal record MetadataJson
         };
         return rm;
     }
+    internal static MetadataJson Empty(String dir)
+    {
+        return new MetadataJson()
+        {
+            Directory = dir,
+            Error = "metadata.json is empty"
+        };
+    }
 
-    public static MetadataJson Parse(AdditionalText addText, CancellationToken canceletionToken)
+    internal static MetadataJson Parse(AdditionalText addText, CancellationToken cancellationToken)
     {
         var ms = new MetadataJson() 
         {
             Directory = DirectoryFilter.DirectoryName(addText.Path)
         };
 
-        var json = addText.GetText(canceletionToken)?.ToString();
+        var json = addText.GetText(cancellationToken)?.ToString();
 
         if (String.IsNullOrEmpty(json))
         {

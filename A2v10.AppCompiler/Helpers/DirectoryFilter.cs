@@ -38,7 +38,7 @@ internal static class DirectoryFilter
         String? na = NormalizePath(a);
         String? nb = NormalizePath(b);
 
-        return String.Equals(na, nb, StringComparison.OrdinalIgnoreCase);
+        return String.Equals(na, nb, StringComparison.Ordinal);
     }
 
     public static String DirectoryName(String filePath)
@@ -46,10 +46,10 @@ internal static class DirectoryFilter
 
     public static String RelativeDirectory(String dir, String ns)
     {
-        var ix = dir.IndexOf(ns, 0, StringComparison.OrdinalIgnoreCase);
+        var ix = dir.IndexOf($"/{ns}/", 0, StringComparison.OrdinalIgnoreCase);
         if (ix == -1) 
             return dir;
-        return dir.Substring(ix + ns.Length + 1);
+        return dir.Substring(ix + ns.Length + 2);
     }
 
     public static String RelativeDirectorySegment(String dir, String ns)
@@ -57,9 +57,6 @@ internal static class DirectoryFilter
         var rel = RelativeDirectory(dir, ns);
         if (String.IsNullOrEmpty(rel))
             return "Undefined";
-        var spl = rel.Split('/');
-        if (spl.Length > 0)
-            return spl[0];
-        return "Undefined";
+        return rel.Split('/')[0];
     }
 }

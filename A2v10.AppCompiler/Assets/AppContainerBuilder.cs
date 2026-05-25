@@ -29,7 +29,7 @@ internal static class AppContainerBuilder
         defaultSeverity: DiagnosticSeverity.Warning,
         isEnabledByDefault: true);
 
-    public static void Build(SourceProductionContext context, ImmutableArray<(String path, String content)> items)
+    public static void Build(SourceProductionContext context, ImmutableArray<(String path, String content)> items, String ns)
     {
         if (items.Length == 0)
         {
@@ -47,9 +47,9 @@ internal static class AppContainerBuilder
 
         var projectDir = Path.GetDirectoryName(path);
 
-        context.AddSource("textfiles.g.cs", TextFileGenerator.GetSource(projectDir, items));
+        context.AddSource("textfiles.g.cs", TextFileGenerator.GetSource(projectDir, items, ns));
 
-        var sb = new StringBuilder(MAIN_CODE);
+        var sb = new StringBuilder(MAIN_CODE.Replace("$namespace$", ns));
         ModuleJson.ReplaceMacros(content, sb);
         context.AddSource("appcontainer.g.cs", SourceText.From(sb.ToString(), Encoding.UTF8));
     }
@@ -65,7 +65,7 @@ internal static class AppContainerBuilder
 
     using A2v10.Module.Infrastructure;
 
-    namespace Generated;
+    namespace $namespace$;
 
     public class AppContainer : IAppContainer 
     {
@@ -80,8 +80,8 @@ internal static class AppContainerBuilder
         private static readonly Guid _id = new Guid("$(id)");
         private readonly TextFilesContainer _textContainer = new();
 
-        public String GetText(String path) => _textContainer.Get(path);
-        public Stream GetStream(String path) => _textContainer.GetStream(path);
+        public String? GetText(String path) => _textContainer.Get(path);
+        public Stream? GetStream(String path) => _textContainer.GetStream(path);
         public IEnumerable<String> EnumerateFiles(String path, String searchPattern) => _textContainer.EnumerateFiles(path, searchPattern);
         public Boolean FileExists(String path) => _textContainer.Exists(path);
     }

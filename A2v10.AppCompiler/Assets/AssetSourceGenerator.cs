@@ -1,5 +1,6 @@
 ﻿// Copyright © 2022-2026 Oleksandr Kukhtin. All rights reserved.
 
+using System;
 using System.Diagnostics;
 using System.Linq;
 
@@ -21,14 +22,22 @@ public class AssetSourceGenerator : IIncrementalGenerator
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
         //if (!Debugger.IsAttached)
-            //Debugger.Launch();
+        //Debugger.Launch();
+
+        var rootNs = context.AnalyzerConfigOptionsProvider
+            .Select(static (provider, _) =>
+                provider.GlobalOptions.TryGetValue("build_property.RootNamespace", out var v)
+                    ? v
+                    : Constants.MarkerNamespace); // фолбек
 
         var files = context.AdditionalTextsProvider
             .Where(DirectoryFilter.IncludeFile)
-            .Select(static (addFile, canceletionToken) =>
-                (path: addFile.Path, content: addFile.GetText(canceletionToken)!.ToString()));
+            .Select(static (addFile, cancellationToken) =>
+                (path: addFile.Path, content: addFile.GetText(cancellationToken)?.ToString() ?? String.Empty));
 
         // not RegisterSourceOutput!!!
-        context.RegisterImplementationSourceOutput(files.Collect(), AppContainerBuilder.Build);
+        context.RegisterImplementationSourceOutput(files.Collect().Combine(rootNs), 
+            static(ctx, data) => AppContainerBuilder.Build(ctx, data.Left, data.Right));
+
     }
 }
