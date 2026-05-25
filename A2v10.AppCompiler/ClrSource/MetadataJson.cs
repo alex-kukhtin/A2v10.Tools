@@ -33,15 +33,10 @@ internal record RawMetadataJson
 internal record MetadataJson
 {
     public String Directory { get; init; } = default!;
-    public String Fields { get; private set; } = String.Empty;
-    public String? Error { get; private set; }
+    public String Fields { get; init; } = String.Empty;
+    public String? Error { get; init; }
 
     public Boolean IsValid => String.IsNullOrEmpty(Error);
-
-    public void FromRaw(RawMetadataJson raw)
-    {
-         Fields = String.Join("\t", raw.Fields.Select(f => $"{f.Name}\b{f.Type}\b{f.Length}"));
-    }
 
     public RawMetadataJson ToRaw()
     {
@@ -49,7 +44,7 @@ internal record MetadataJson
         {
             var x = ss.Split('\b');
             if (x.Length != 3)
-                return new RawField();
+                throw new InvalidOperationException("Invalid program state");
 
             return new RawField()
             {
@@ -58,52 +53,54 @@ internal record MetadataJson
                 Length = Convert.ToInt32(x[2])
             };
         }
-        var arr = Fields.Split('\t').Select(FromString);
+        var arr = String.IsNullOrEmpty(Fields)
+            ? []
+            : Fields.Split('\t').Select(FromString);
+
         var rm = new RawMetadataJson()
         {
             Fields = [..arr]
         };
         return rm;
     }
-    internal static MetadataJson Empty(String dir)
+
+    internal static MetadataJson FromRaw(String dir, RawMetadataJson raw)
     {
         return new MetadataJson()
         {
             Directory = dir,
-            Error = Constants.Errors.METADATA_NOT_FOUND
+            Fields = String.Join("\t", raw.Fields.Select(f => $"{f.Name}\b{f.Type}\b{f.Length}"))
+        };
+    }
+
+    internal static MetadataJson Fail(String dir, String msg)
+    {
+        return new MetadataJson()
+        {
+            Directory = dir,
+            Error = msg
         };
     }
 
     internal static MetadataJson Parse(AdditionalText addText, CancellationToken cancellationToken)
     {
-        var ms = new MetadataJson() 
-        {
-            Directory = DirectoryFilter.DirectoryName(addText.Path)
-        };
+        var dir = DirectoryFilter.DirectoryName(addText.Path);
 
         var json = addText.GetText(cancellationToken)?.ToString();
 
         if (String.IsNullOrEmpty(json))
-        {
-            ms.Error = "metadata.json is empty";
-            return ms;
-        }
+            return MetadataJson.Fail(dir, Constants.Errors.METADATA_IS_EMPTY);
 
         try
         {
             var rawMeta = JsonConvert.DeserializeObject<RawMetadataJson>(json!, JsonSerializerHelpers.CamelCaseSettings);
             if (rawMeta == null)
-            {
-                ms.Error = "metadata.json deserialize fail";
-                return ms;
-            }
-            ms.FromRaw(rawMeta);
-            return ms;
+                return MetadataJson.Fail(dir, Constants.Errors.METADATA_IS_BAD);
+            return MetadataJson.FromRaw(dir, rawMeta);
         }
         catch (Exception ex)
         {
-            ms.Error = ex.Message;
-            return ms;
+            return MetadataJson.Fail(dir, ex.Message);
         }
     }
 }

@@ -15,19 +15,29 @@ internal record ModuleDef
 	public String Company { get; set; } = String.Empty;
 	public String Description { get; set; } = String.Empty;
 	public String Copyright { get; set; } = String.Empty;
+
+    public void ReplaceMacros(StringBuilder sb)
+    {
+        sb.Replace("$(id)", Id);
+        sb.Replace("$(name)", Name);
+        sb.Replace("$(authors)", Authors);
+        sb.Replace("$(company)", Company);
+        sb.Replace("$(description)", Description);
+        sb.Replace("$(copyright)", Copyright);
+    }
 }
 
 internal class ModuleJson
 {
-	public static void ReplaceMacros(String json, StringBuilder sb)
+	public static ModuleDef? Load(String json)
 	{
-		var def = JsonConvert.DeserializeObject<ModuleDef>(json, JsonSerializerHelpers.CamelCaseSettings)
-			?? throw new InvalidOperationException("Invalid module.json");
-		sb.Replace("$(id)", def.Id);
-		sb.Replace("$(name)", def.Name);
-		sb.Replace("$(authors)", def.Authors);
-		sb.Replace("$(company)", def.Company);
-		sb.Replace("$(description)", def.Description);
-		sb.Replace("$(copyright)", def.Copyright);
+		try
+		{
+			return JsonConvert.DeserializeObject<ModuleDef>(json, JsonSerializerHelpers.CamelCaseSettings);
+		}
+		catch (Exception)
+		{ 
+			return null; 
+		}
 	}
 }

@@ -37,6 +37,7 @@ public class ClrSourceGenerator : IIncrementalGenerator
     namespace {{Constants.MarkerNamespace}}
     {
         [global::System.AttributeUsage(global::System.AttributeTargets.Class)]
+        [global::Microsoft.CodeAnalysis.EmbeddedAttribute]
         internal sealed class ServerLogicAttribute : global::System.Attribute
         {
         }
@@ -63,6 +64,7 @@ public class ClrSourceGenerator : IIncrementalGenerator
 
         context.RegisterPostInitializationOutput(static ctx =>
         {
+            ctx.AddEmbeddedAttributeDefinition();
             ctx.AddSource("markerattr.g.cs", AttributeSource);
             ctx.AddSource("usingattr.g.cs", GlobalUsingSource);
         });
@@ -102,7 +104,7 @@ public class ClrSourceGenerator : IIncrementalGenerator
                 foreach (ClassModel model in classModels)
                 {
                     if (!map.TryGetValue(model.Directory, out var json))
-                        json = MetadataJson.Empty(model.Directory);
+                        json = MetadataJson.Fail(model.Directory, Constants.Errors.METADATA_NOT_FOUND);
                     result.Add((model, json));
                 }
                 return result.ToImmutable();

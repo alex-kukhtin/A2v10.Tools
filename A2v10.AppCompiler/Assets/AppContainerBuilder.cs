@@ -21,10 +21,10 @@ internal static class AppContainerBuilder
         defaultSeverity: DiagnosticSeverity.Warning,
         isEnabledByDefault: true);
 
-    static readonly DiagnosticDescriptor NoModelJsonDiagnostic = new(
+    static readonly DiagnosticDescriptor BadModuleJsonDiagnostic = new(
         id: "A2AC002",
-        title: "No module.json found",
-        messageFormat: "The file module.json not found. Check project root.",
+        title: "module.json missing or invalid",
+        messageFormat: "module.json {0}. AppContainer will not be generated.",
         category: "AppCompiler",
         defaultSeverity: DiagnosticSeverity.Warning,
         isEnabledByDefault: true);
@@ -41,8 +41,15 @@ internal static class AppContainerBuilder
 
         if (String.IsNullOrEmpty(path))
         {
-            context.ReportDiagnostic(Diagnostic.Create(NoModelJsonDiagnostic, Location.None));
-            return; // module.json not found
+            context.ReportDiagnostic(Diagnostic.Create(BadModuleJsonDiagnostic, Location.None, "not found in project root"));
+            return;
+        }
+
+        var md = ModuleJson.Load(content);
+        if (md == null)
+        {
+            context.ReportDiagnostic(Diagnostic.Create(BadModuleJsonDiagnostic, Location.None, "is invalid or has unsupported format"));
+            return;
         }
 
         var projectDir = Path.GetDirectoryName(path);
@@ -50,7 +57,8 @@ internal static class AppContainerBuilder
         context.AddSource("textfiles.g.cs", TextFileGenerator.GetSource(projectDir, items, ns));
 
         var sb = new StringBuilder(MAIN_CODE.Replace("$namespace$", ns));
-        ModuleJson.ReplaceMacros(content, sb);
+        md.ReplaceMacros(sb);
+
         context.AddSource("appcontainer.g.cs", SourceText.From(sb.ToString(), Encoding.UTF8));
     }
 

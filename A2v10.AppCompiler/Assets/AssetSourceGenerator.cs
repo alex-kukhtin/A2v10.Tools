@@ -28,7 +28,7 @@ public class AssetSourceGenerator : IIncrementalGenerator
             .Select(static (provider, _) =>
                 provider.GlobalOptions.TryGetValue("build_property.RootNamespace", out var v)
                     ? v
-                    : Constants.MarkerNamespace); // фолбек
+                    : "Generated"); // fallback
 
         var files = context.AdditionalTextsProvider
             .Where(DirectoryFilter.IncludeFile)

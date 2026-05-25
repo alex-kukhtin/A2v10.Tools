@@ -5,7 +5,6 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 
 using Microsoft.CodeAnalysis.Text;
 
@@ -43,8 +42,6 @@ internal class TextFileGenerator
         var sbBody = new StringBuilder();
         foreach (var (path, content) in items)
         {
-            if (path.EndsWith("tsconfig.json"))
-                continue;
             var fi = GetFileInfo(path, basePath);
             sbDict.AppendLine(MapEntry(fi));
             sbBody.AppendLine(MapBody(fi, content));
@@ -62,22 +59,11 @@ internal class TextFileGenerator
         return $"\t\t[\"{file.RelativePath}\"] = {file.Identifier},";
     }
 
-    static String PackText(String text)
-    {
-        text = Regex.Replace(text, @"\r|\n", String.Empty);
-        // ts tabs -> one space
-        return Regex.Replace(text, @"\t|\s\s\s\s", " ");
-    }
     static String MapBody(AssetInfo file, String? text)
     {
         String statement = "Array.Empty<Byte>()";
         if (!String.IsNullOrEmpty(text))
-        {
-            var ext = Path.GetExtension(file.RelativePath);
-            if (ext != ".txt")
-                text = PackText(text!);
             statement = Encoder.EncodeBytes(text!);
-        }
         return $"\tstatic Byte[] {file.Identifier}() => {statement};";
     }
 

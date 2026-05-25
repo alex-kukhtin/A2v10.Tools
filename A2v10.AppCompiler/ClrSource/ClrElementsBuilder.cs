@@ -11,22 +11,35 @@ namespace A2v10.AppCompiler;
 
 internal class ClrElementsBuilder
 {
+    static readonly DiagnosticDescriptor InvalidJsonDiagnostic = new(
+        id: "A2AC003",
+        title: "Invalid metadata.json",
+        messageFormat: "metadata.json in '{0}' is invalid: {1}. Entity will not be registered.",
+        category: "AppCompiler",
+        defaultSeverity: DiagnosticSeverity.Warning,
+        isEnabledByDefault: true);
+
     public static void Build(SourceProductionContext context, ImmutableArray<(ClassModel model, MetadataJson meta)> items, String ns)
     {
         if (items.Length == 0)
             return;
 
-        var allElems = items.Select((itm) => 
+        var allElems = items.Where(itm => itm.meta.IsValid).Select((itm) => 
             $"""["{DirectoryFilter.RelativeDirectory(itm.model.Directory, ns)}"] = (model, sp) => new {itm.model.Namespace}.{itm.model.Name}(sp, model.Get<ExpandoObject>("{itm.model.Name}"))""");
 
         context.AddSource("register.g.cs", CreateProviderModule(allElems, ns));
 
         foreach (var itm in items)
         {
-            var meta = itm.meta.ToRaw();
-            var cls = itm.model;
-            var fileName = $"_{cls.Name.ToLowerInvariant()}.g.cs";
-            context.AddSource(fileName, CreateText(cls, meta, ns));
+            if (itm.meta.IsValid)
+            {
+                var meta = itm.meta.ToRaw();
+                var cls = itm.model;
+                var fileName = $"_{cls.Name.ToLowerInvariant()}.g.cs";
+                context.AddSource(fileName, CreateText(cls, meta, ns));
+            }
+            else 
+                context.ReportDiagnostic(Diagnostic.Create(InvalidJsonDiagnostic, Location.None, itm.meta.Directory, itm.meta.Error));
         }
     }
 
