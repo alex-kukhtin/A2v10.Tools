@@ -21,4 +21,9 @@ static internal class Constants
         /* Copyright © 2025-2026 Oleksandr Kukhtin. All rights reserved.*/
         
         """;
+
+    internal static class Errors
+    {
+        internal const String METADATA_NOT_FOUND = "metadata.json not found";
+    }
 }

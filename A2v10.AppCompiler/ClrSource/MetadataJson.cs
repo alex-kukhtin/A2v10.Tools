@@ -61,7 +61,7 @@ internal record MetadataJson
         var arr = Fields.Split('\t').Select(FromString);
         var rm = new RawMetadataJson()
         {
-            Fields = arr.ToArray()
+            Fields = [..arr]
         };
         return rm;
     }
@@ -70,7 +70,7 @@ internal record MetadataJson
         return new MetadataJson()
         {
             Directory = dir,
-            Error = "metadata.json is empty"
+            Error = Constants.Errors.METADATA_NOT_FOUND
         };
     }
 

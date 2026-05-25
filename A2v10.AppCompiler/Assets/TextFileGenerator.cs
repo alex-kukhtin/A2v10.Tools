@@ -70,7 +70,7 @@ internal class TextFileGenerator
     }
     static String MapBody(AssetInfo file, String? text)
     {
-        String statement = "null";
+        String statement = "Array.Empty<Byte>()";
         if (!String.IsNullOrEmpty(text))
         {
             var ext = Path.GetExtension(file.RelativePath);

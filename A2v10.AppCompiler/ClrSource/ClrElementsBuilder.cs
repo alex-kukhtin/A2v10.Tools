@@ -39,7 +39,7 @@ internal class ClrElementsBuilder
         {
             foreach (var f in meta.Fields)
             {
-                var len = f.Length > 0 ? $"[MaxLength({f.Length})]\r\n\t" : String.Empty;
+                var len = f.Length > 0 ? $"[MaxLength({f.Length})]\n\t" : String.Empty;
                 yield return $"{len}public {f.Type.ToPropertyType()} {f.Name} {{ get; set; }}";
             }
         }
@@ -73,7 +73,7 @@ internal class ClrElementsBuilder
 
         public partial class {{cls.Name}} : {{baseClass}}Base<Int64>
         {
-            {{String.Join("\r\n\t", props())}}
+            {{String.Join("\n\t", props())}}
 
             public {{cls.Name}}(IServiceProvider sp) : base(sp) 
             {
@@ -84,7 +84,7 @@ internal class ClrElementsBuilder
             {
                 if (src != null) {
                     var d = (IDictionary<String, Object?>)src;
-                    {{String.Join("\r\n\t\t\t", assignProps())}}
+                    {{String.Join("\n\t\t\t", assignProps())}}
                 }
                 Init();
             }   
@@ -95,7 +95,7 @@ internal class ClrElementsBuilder
                 if (_source == null)
                     return;
                 var d = (IDictionary<String, Object?>) _source;
-                {{String.Join("\r\n\t\t", expProps())}}
+                {{String.Join("\n\t\t", expProps())}}
             }
         }
         """";
@@ -105,7 +105,7 @@ internal class ClrElementsBuilder
 
     static String CreateProviderModule(IEnumerable<String> items, String ns)
     {
-        var dictItems = String.Join(",\r\n\t\t", items);
+        var dictItems = String.Join(",\n\t\t", items);
         var code =
         $$""""
         {{Constants.AUTO_GENERATED}}    
