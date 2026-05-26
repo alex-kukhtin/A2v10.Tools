@@ -28,11 +28,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
-		<Content Include="$(OutputPath)\A2v10.AppCompiler.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<AdditionalFiles Include="AnalyzerReleases.Shipped.md" />
 		<AdditionalFiles Include="AnalyzerReleases.Unshipped.md" />
 	</ItemGroup>
@@ -49,9 +44,9 @@
 		<None Include="$(PkgNewtonsoft_Json)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Compile Remove="bin\**" />
-	  <EmbeddedResource Remove="bin\**" />
-	  <None Remove="bin\**" />
+		<Compile Remove="bin\**" />
+		<EmbeddedResource Remove="bin\**" />
+		<None Remove="bin\**" />
 	</ItemGroup>
 	<Target Name="GetDependencyTargetPaths">
 		<ItemGroup>
@@ -60,11 +55,12 @@
 	</Target>
 
 	<ItemGroup>
-	  <Content Remove="bin\Debug\netstandard2.0\A2v10.AppCompiler.dll" />
+		<Content Remove="bin\Debug\netstandard2.0\A2v10.AppCompiler.dll" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<None Include="README.md" Pack="true" PackagePath="\" />
 		<None Include="build\A2v10.AppCompiler2026.props" Pack="true" PackagePath="\build" />
+		<None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="\analyzers\dotnet\cs"  />
 	</ItemGroup>
 </Project>

@@ -5,7 +5,7 @@ VisualStudioVersion = 18.0.11205.157
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "A2v10.BuildSql", "A2v10.BuildSql\A2v10.BuildSql.csproj", "{6FFD8A37-5A7A-4B34-A477-369516A19718}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "A2v10.AppCompiler", "A2v10.AppCompiler\A2v10.AppCompiler.csproj", "{FE1CBE2F-700B-44C5-B80D-18A5A8AE0155}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "A2v10.AppCompiler2026", "A2v10.AppCompiler\A2v10.AppCompiler2026.csproj", "{FE1CBE2F-700B-44C5-B80D-18A5A8AE0155}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MainApp", "MainApp\MainApp.csproj", "{8D016BCC-D8A2-4CA1-9ADC-DFAB2123AF53}"
 EndProject

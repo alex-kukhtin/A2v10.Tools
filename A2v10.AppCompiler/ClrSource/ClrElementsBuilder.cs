@@ -27,7 +27,7 @@ internal class ClrElementsBuilder
         var allElems = items.Where(itm => itm.meta.IsValid).Select((itm) => 
             $"""["{DirectoryFilter.RelativeDirectory(itm.model.Directory, ns)}"] = (model, sp) => new {itm.model.Namespace}.{itm.model.Name}(sp, model.Get<ExpandoObject>("{itm.model.Name}"))""");
 
-        context.AddSource("register.g.cs", CreateProviderModule(allElems, ns));
+        context.AddSource("A2v10.Register.g.cs", CreateProviderModule(allElems, ns));
 
         foreach (var itm in items)
         {
@@ -35,7 +35,7 @@ internal class ClrElementsBuilder
             {
                 var meta = itm.meta.ToRaw();
                 var cls = itm.model;
-                var fileName = $"_{cls.Name.ToLowerInvariant()}.g.cs";
+                var fileName = $"_{cls.Namespace.Replace('.', '_')}_{cls.Name}.g.cs";
                 context.AddSource(fileName, CreateText(cls, meta, ns));
             }
             else 

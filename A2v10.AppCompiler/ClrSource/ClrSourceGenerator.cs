@@ -65,8 +65,8 @@ public class ClrSourceGenerator : IIncrementalGenerator
         context.RegisterPostInitializationOutput(static ctx =>
         {
             ctx.AddEmbeddedAttributeDefinition();
-            ctx.AddSource("markerattr.g.cs", AttributeSource);
-            ctx.AddSource("usingattr.g.cs", GlobalUsingSource);
+            ctx.AddSource("A2v10.MarkerAttr.g.cs", AttributeSource);
+            ctx.AddSource("A2v10.UsingAttr.g.cs", GlobalUsingSource);
         });
 
 

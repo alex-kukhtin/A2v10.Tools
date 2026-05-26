@@ -54,12 +54,12 @@ internal static class AppContainerBuilder
 
         var projectDir = Path.GetDirectoryName(path);
 
-        context.AddSource("textfiles.g.cs", TextFileGenerator.GetSource(projectDir, items, ns));
+        context.AddSource("A2v10.TextFiles.g.cs", TextFileGenerator.GetSource(projectDir, items, ns));
 
         var sb = new StringBuilder(MAIN_CODE.Replace("$namespace$", ns));
         md.ReplaceMacros(sb);
 
-        context.AddSource("appcontainer.g.cs", SourceText.From(sb.ToString(), Encoding.UTF8));
+        context.AddSource("A2v10.AppContainer.g.cs", SourceText.From(sb.ToString(), Encoding.UTF8));
     }
 
 

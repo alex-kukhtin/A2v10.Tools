@@ -9,7 +9,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\A2v10.AppCompiler\A2v10.AppCompiler.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+		<ProjectReference Include="..\A2v10.AppCompiler\A2v10.AppCompiler2026.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -31,5 +31,10 @@
 
 	<ItemGroup>
 		<AdditionalFiles Include="**/*.json;**/*.js;**/*.txt;**/*.xaml;**/*.vxaml;**/*.css;**/*.html" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Remove="app.json" />
+	  <Content Remove="menu.json" />
 	</ItemGroup>
 </Project>
