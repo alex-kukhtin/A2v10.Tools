@@ -4,7 +4,7 @@
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<LangVersion>latest</LangVersion>
 		<Nullable>enable</Nullable>
-		<Version>10.1.8636</Version>
+		<Version>10.1.8639</Version>
 		<PackageId>A2v10.AppCompiler2026</PackageId>
 		<Product>A2v10</Product>
 		<Authors>Oleksandr Kukthin</Authors>
