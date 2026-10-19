@@ -1,0 +1,9 @@
+[
+	{
+		"outputFile": "_sqlscripts/test_app.sql",
+		"inputFiles": [
+			"_sql/_schemas.sql",
+			"/**/logic.sql"
+		]
+	}
+]

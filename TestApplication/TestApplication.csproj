@@ -18,4 +18,11 @@
 	<PackageReference Include="A2v10.App.Infrastructure" Version="10.1.8620" />
 </ItemGroup>
 
+<!-- local A2v10.Sql.MSBuild task; TaskHostFactory: out-of-proc, does not lock the dll between builds -->
+<UsingTask TaskName="A2v10.Sql.MSBuild.Build" AssemblyFile="..\A2v10.BuildSql\bin\$(Configuration)\netstandard2.0\A2v10.Sql.MSBuild.dll" TaskFactory="TaskHostFactory" />
+
+<Target Name="BuildSql" AfterTargets="Build">
+	<A2v10.Sql.MSBuild.Build ProjectDir="$(MSBuildProjectDirectory)" />
+</Target>
+
 </Project>
