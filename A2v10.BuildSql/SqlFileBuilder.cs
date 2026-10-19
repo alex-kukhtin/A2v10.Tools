@@ -53,14 +53,15 @@ internal class SqlFileBuilder
 			Directory.CreateDirectory(dirName);
 
 		File.Delete(outFilePath);
-		var nl = Environment.NewLine;
+		var nl = '\n';
 		FileStream? fw = null;
 		try
 		{
 			fw = File.Open(outFilePath, FileMode.CreateNew, FileAccess.Write);
 			_log.LogMessage(MessageImportance.High, $"Writing {item.OutputFile}");
 			using var sw = new StreamWriter(fw, new UTF8Encoding(true));
-			fw = null;
+			sw.NewLine = nl.ToString();
+            fw = null;
 			sw.Write($"/* {item.OutputFile} */{nl}{nl}");
 			foreach (var f in item.InputFiles)
             {
@@ -72,6 +73,7 @@ internal class SqlFileBuilder
                     relativePath = relativePath.Replace('\\', '/');
                     _log.LogMessage(MessageImportance.High, $"\t{relativePath}"); 
 					var inputText = new StringBuilder(File.ReadAllText(resolvedPath));
+					inputText.Replace("\r\n", nl.ToString());
 					sw.Write(inputText.ToString());
 					sw.WriteLine();
 				}
