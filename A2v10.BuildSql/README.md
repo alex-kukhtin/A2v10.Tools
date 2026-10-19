@@ -8,7 +8,7 @@ in `sql.json` into ready-to-deploy scripts.
 ## Installation
 
 ```xml
-<PackageReference Include="A2v10.Sql.MSBuild" Version="10.1.8221" PrivateAssets="all" />
+<PackageReference Include="A2v10.Sql.MSBuild" Version="10.1.8222" PrivateAssets="all" />
 ```
 
 The package is needed only at build time. `PrivateAssets="all"` keeps it out of
